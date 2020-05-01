@@ -49,10 +49,13 @@ a {
   color: inherit;
 }
 a:hover {
-  color: orangered;
+  color: orange;
 }
 em,
 i {
   font-style: normal;
+}
+.commonality {
+  color: orange;
 }
 </style>

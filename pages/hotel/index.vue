@@ -24,18 +24,21 @@
       </el-row>
       <el-row class="breadcrumb">
         <el-col :span="24">
-          <div class="grid-content bg-purple-dark">酒店列表页</div>
+          <div class="grid-content bg-purple-dark"><hotelList /></div>
         </el-col>
       </el-row>
     </section>
+    <!-- <nuxt-link :to="`/hotel/detail`">酒店详情</nuxt-link> -->
   </div>
 </template>
 
 <script>
 import HotelFilter from "../../components/hotel/hotelFilter";
+import hotelList from "@/components/hotel/hotelList.vue";
 export default {
   components: {
-    HotelFilter
+    HotelFilter,
+    hotelList
   },
   data() {
     return {
@@ -75,8 +78,7 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="less">
+<style lang="less" scoped>
 .container {
   width: 1000px;
   margin: 0 auto;
