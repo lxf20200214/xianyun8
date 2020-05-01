@@ -30,7 +30,11 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <el-popover width="300" placement="bottom-start" v-model="visible">
+              <el-popover
+                width="300"
+                placement="bottom-start"
+                v-model="visible"
+              >
                 <el-row class="grid-content-left">
                   <el-col :span="8">
                     <div class="grid-content bg-purple">每间</div>
@@ -43,7 +47,12 @@
                         size="small"
                         @change="chengren"
                       >
-                        <el-option v-for="item in 10" :key="item" :label="item" :value="item"></el-option>
+                        <el-option
+                          v-for="item in 10"
+                          :key="item"
+                          :label="item"
+                          :value="item"
+                        ></el-option>
                       </el-select>
                     </div>
                   </el-col>
@@ -56,14 +65,21 @@
                         style="margin-left: 10px;"
                         @change="ertong"
                       >
-                        <el-option v-for="(item) in 10" :key="item" :label="item" :value="item"></el-option>
+                        <el-option
+                          v-for="item in 10"
+                          :key="item"
+                          :label="item"
+                          :value="item"
+                        ></el-option>
                       </el-select>
                     </div>
                   </el-col>
                 </el-row>
                 <el-row class="primary">
                   <div style="text-align: right; padding-top: 15px ">
-                    <el-button type="primary" size="mini" @click="visiblepeople">确定</el-button>
+                    <el-button type="primary" size="mini" @click="visiblepeople"
+                      >确定</el-button
+                    >
                   </div>
                 </el-row>
 
@@ -95,8 +111,12 @@
             <el-col :span="21">
               <div class="grid-content bg-purple">
                 <ul :class="heightactive ? '' : 'active'">
-                  <li v-for="(item, index) in hotelscenics" :key="index">
-                    <el-link href="#">{{item.name}}</el-link>
+                  <li
+                    v-for="(item, index) in $store.state.hotel.setcitydata
+                      .scenics"
+                    :key="index"
+                  >
+                    <el-link href="#">{{ item.name }}</el-link>
                   </li>
                 </ul>
               </div>
@@ -110,7 +130,10 @@
           <el-col :span="24">
             <el-col :span="3">
               <el-badge value="?" class="item" type="primary">
-                <el-tooltip content="等级均价由平日价格计算得出，节假日价格会有上浮。" placement="top">
+                <el-tooltip
+                  content="等级均价由平日价格计算得出，节假日价格会有上浮。"
+                  placement="top"
+                >
                   <span size="small">均价</span>
                 </el-tooltip>
               </el-badge>
@@ -118,36 +141,44 @@
             <el-col :span="21">
               <div class="grid-content bg-purple grid-content-bottom">
                 <el-col :span="7">
-                  <el-tooltip content="等级均价由平日价格计算得出，节假日价格会有上浮。" placement="bottom-start">
+                  <el-tooltip
+                    content="等级均价由平日价格计算得出，节假日价格会有上浮。"
+                    placement="bottom-start"
+                  >
                     <el-rate
                       show-score
                       v-model="value"
                       disabled
                       text-color="#ff9900"
-                      score-template="$398"
+                      score-template="$332"
                     ></el-rate>
                   </el-tooltip>
                 </el-col>
                 <el-col :span="7">
-                  <el-tooltip content="等级均价由平日价格计算得出，节假日价格会有上浮。" placement="bottom-start">
+                  <el-tooltip
+                    content="等级均价由平日价格计算得出，节假日价格会有上浮。"
+                    placement="bottom-start"
+                  >
                     <el-rate
                       show-score
                       v-model="value"
                       disabled
                       text-color="#ff9900"
-                      score-template="$398"
+                      score-template="$521"
                     ></el-rate>
                   </el-tooltip>
                 </el-col>
-
                 <el-col :span="7">
-                  <el-tooltip content="等级均价由平日价格计算得出，节假日价格会有上浮。" placement="bottom-start">
+                  <el-tooltip
+                    content="等级均价由平日价格计算得出，节假日价格会有上浮。"
+                    placement="bottom-start"
+                  >
                     <el-rate
                       show-score
                       v-model="value"
                       disabled
                       text-color="#ff9900"
-                      score-template="$398"
+                      score-template="$768"
                     ></el-rate>
                   </el-tooltip>
                 </el-col>
@@ -155,6 +186,7 @@
             </el-col>
           </el-col>
         </el-col>
+        <!-- 地图 -->
         <el-col :span="11">
           <div class="grid-content bg-purple-light">
             <div id="container"></div>
@@ -168,9 +200,13 @@
           <div class="block">
             <div class="blockspan">
               <span class="demonstration">价格</span>
-              <span>0-{{pricevalue}}</span>
+              <span>0-{{ pricevalue }}</span>
             </div>
-            <el-slider v-model="pricevalue" :max="4000" @change="pricevalue1"></el-slider>
+            <el-slider
+              v-model="pricevalue"
+              :max="4000"
+              @change="pricevalue1"
+            ></el-slider>
           </div>
         </div>
       </el-col>
@@ -180,14 +216,23 @@
             <span class="demonstration">住宿等级</span>
             <el-dropdown placement="bottom-start">
               <span class="el-dropdown-link">
-                {{levelscheckList.length>1?'已选'+levelscheckList.length+'项':levelscheckList[0] ||'不限'}}
-                <i
-                  class="el-icon-arrow-down el-icon--right"
-                ></i>
+                {{
+                  levelscheckList.length > 1
+                    ? "已选" + levelscheckList.length + "项"
+                    : levelscheckList[0] || "不限"
+                }}
+                <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown" placement="bottom-start">
-                <el-dropdown-item v-for="item in levels.levels" :key="item.levels">
-                  <el-checkbox :label="item.name" @change="dropdownitem" v-model="levelscheckList"></el-checkbox>
+                <el-dropdown-item
+                  v-for="item in levels.levels"
+                  :key="item.levels"
+                >
+                  <el-checkbox
+                    :label="item.name"
+                    @change="dropdownitem"
+                    v-model="levelscheckList"
+                  ></el-checkbox>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -201,14 +246,23 @@
               <span class="demonstration">住宿类型</span>
               <el-dropdown placement="bottom-start">
                 <span class="el-dropdown-link">
-                  {{typescheckList.length>1?'已选'+typescheckList.length+'项':typescheckList[0] ||'不限'}}
-                  <i
-                    class="el-icon-arrow-down el-icon--right"
-                  ></i>
+                  {{
+                    typescheckList.length > 1
+                      ? "已选" + typescheckList.length + "项"
+                      : typescheckList[0] || "不限"
+                  }}
+                  <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item v-for="item in levels.types" :key="item.levels">
-                    <el-checkbox :label="item.name" @change="dropdownitem" v-model="typescheckList"></el-checkbox>
+                  <el-dropdown-item
+                    v-for="item in levels.types"
+                    :key="item.levels"
+                  >
+                    <el-checkbox
+                      :label="item.name"
+                      @change="dropdownitem"
+                      v-model="typescheckList"
+                    ></el-checkbox>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -223,13 +277,18 @@
               <span class="demonstration">酒店设施</span>
               <el-dropdown placement="bottom-start">
                 <span class="el-dropdown-link">
-                  {{assetscheckList.length>1?'已选'+assetscheckList.length+'项':assetscheckList[0] ||'不限'}}
-                  <i
-                    class="el-icon-arrow-down el-icon--right"
-                  ></i>
+                  {{
+                    assetscheckList.length > 1
+                      ? "已选" + assetscheckList.length + "项"
+                      : assetscheckList[0] || "不限"
+                  }}
+                  <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item v-for="item in levels.assets" :key="item.levels">
+                  <el-dropdown-item
+                    v-for="item in levels.assets"
+                    :key="item.levels"
+                  >
                     <el-checkbox
                       :label="item.name"
                       @change="dropdownitem"
@@ -249,10 +308,12 @@
               <span class="demonstration">酒店品牌</span>
               <el-dropdown placement="bottom-start">
                 <span class="el-dropdown-link">
-                  {{brandscheckList.length>1?'已选'+brandscheckList.length+'项':brandscheckList[0] ||'不限'}}
-                  <i
-                    class="el-icon-arrow-down el-icon--right"
-                  ></i>
+                  {{
+                    brandscheckList.length > 1
+                      ? "已选" + brandscheckList.length + "项"
+                      : brandscheckList[0] || "不限"
+                  }}
+                  <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu
                   slot="dropdown"
@@ -295,7 +356,7 @@ export default {
       map: {}, // 地图对象
       city: "",
       hotelcityid: "", //城市id
-      hotelscenics: [], //区域内容列表
+      //区域内容列表
       visible: false, //是否弹窗,
       heightactive: true, //高度
       value: 3.5,
@@ -319,33 +380,12 @@ export default {
         // center: position //中心点坐标
       });
       this.map = map;
-      // 定位
-      AMap.plugin("AMap.CitySearch", () => {
-        let citySearch = new AMap.CitySearch();
-        citySearch.getLocalCity((status, result) => {
-          if (status === "complete" && result.info === "OK") {
-            // 查询成功，result即为当前所在城市信息
-            // alert("想获取你的位置");
-            // this.$message.success("你当前所在的城市是:" + result.city);
-            this.$axios({
-              url: "/cities",
-              params: {
-                name: result.city
-              }
-            }).then(res => {
-              // data是城市的数组
-              const { data } = res.data;
-              this.city = data[0].name;
-              this.hotelcityid = data[0].id;
-              this.hotelscenics = data[0].scenics;
-              this.getCities(this.hotelcityid);
-            });
-          }
-        });
-      });
-      //
       map.clearMap(); // 清除地图覆盖物
+      this.getCities(this.hotelcityid);
     }, 10);
+    console.log(this.$store.state.hotel.setcitydata);
+    this.hotelcityid = this.$store.state.hotel.setcitydata.id;
+    console.log(this.hotelcityid);
     this.$axios({
       url: "/hotels/options"
     }).then(res => {

@@ -10,7 +10,7 @@
           <div class="grid-content bg-purple-dark">
             酒店
             <i class="el-icon-arrow-right"></i>
-            成都是市酒店预订
+            {{ city }}酒店预订
           </div>
         </el-col>
       </el-row>
@@ -36,6 +36,42 @@ import HotelFilter from "../../components/hotel/hotelFilter";
 export default {
   components: {
     HotelFilter
+  },
+  data() {
+    return {
+      city: ""
+    };
+  },
+  mounted() {
+    setTimeout(() => {
+      AMap.plugin("AMap.CitySearch", () => {
+        let citySearch = new AMap.CitySearch();
+        citySearch.getLocalCity((status, result) => {
+          if (status === "complete" && result.info === "OK") {
+            // 查询成功，result即为当前所在城市信息
+            // alert("想获取你的位置");
+            this.$message.success("你当前所在的城市是:" + result.city);
+            this.$axios({
+              url: "/cities",
+              params: {
+                name: result.city
+              }
+            }).then(res => {
+              // data是城市的数组
+              const { data } = res.data;
+              // 保存this.form数据到vuex中,供历史记录调用
+              console.log(data[0]);
+
+              this.$store.commit("hotel/setcitydata", data[0]);
+              this.city = data[0].name;
+              // this.hotelcityid = data[0].id;
+              // this.hotelscenics = data[0].scenics;
+              // this.getCities(this.hotelcityid);
+            });
+          }
+        });
+      });
+    }, 10);
   }
 };
 </script>
