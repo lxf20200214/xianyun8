@@ -51,8 +51,9 @@ export default {
     //   Amap在模板中导入js文件之后就应该是一个全局变量了
     //  map是一个地图的对象
     var map = new AMap.Map("container", {
-      zoom: 11, //级别
-      center: [113.3245904, 23.1066805] //中心点坐标
+      resizeEnable: true,
+      zoom: 13, //级别
+      center: [116.397428, 39.90923] //中心点坐标
     });
     this.map = map;
     AMap.plugin("AMap.CitySearch", () => {
