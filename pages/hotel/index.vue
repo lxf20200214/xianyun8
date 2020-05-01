@@ -1,10 +1,17 @@
 <template>
-  <div>酒店首页</div>
+  <div>
+    <hotelList />
+  </div>
 </template>
 
 <script>
-export default {};
+import hotelList from "@/components/hotel/hotelList.vue";
+export default {
+  components: {
+    hotelList
+  }
+};
 </script>
 
-<style>
+<style lang="less" scoped>
 </style>
