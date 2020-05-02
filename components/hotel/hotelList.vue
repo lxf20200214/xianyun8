@@ -2,12 +2,14 @@
   <div>
     <div
       class="hote"
-      v-for="(item, index) in list"
+      v-for="(item, index) in data.data"
       :key="index"
       @click="
         $router.push({
-          path: '/hotel/detail',
-          queryurl: item.id
+          path: `/hotel/detail`,
+          query:{
+            id:item.id
+          }
         })
       "
     >
@@ -54,7 +56,7 @@
         :current-page="currentPage4"
         :page-sizes="[10, 20, 30, 50]"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+        :total="data.total"
       >
         <!--   -->
       </el-pagination>
@@ -64,63 +66,58 @@
 
 <script>
 export default {
+  props: {
+    data: {
+      type: Object,
+      default: {}
+    }
+  },
   data() {
     return {
-      list: [],
-      currentPage4: 1, //当前页
-      total: 0 //总页数
+      currentPage4: 0, //当前页
+      total: 0, //总页数
+      city: "",
+      cityID: "",
+      limit: 10
     };
   },
-  mounted() {
-    this.$axios({
-      url: "/hotels",
-      params: {
-        city: this.$store.state.hotel.setcitydata.id
-      }
-    }).then(res => {
-      const { data } = res.data;
-      console.log(res);
-      console.log(data);
-      this.total = res.data.total;
-      this.list = data;
-    });
-  },
+  mounted() {},
   methods: {
     //条数数触发
     handleSizeChange(limit) {
-      console.log(limit);
-
-      this.getHotel("", limit);
+      this.limit = limit;
+      this.getHotel(1);
     },
     //当前页改变时触发
     handleCurrentChange(page) {
-      console.log(page);
       this.getHotel(page);
+      setTimeout(() => {
+        this.$router.push({
+          path: "/hotel",
+          query: {
+            cityName: this.$store.state.hotel.setcitydata.name,
+            page: page
+          }
+        });
+      }, 10);
     },
     // 封装请求酒店列表的方法
-    getHotel(pageindex, limit) {
+    getHotel(pageindex) {
       // 请求和value相关的城市
-      console.log(pageindex);
-
       return this.$axios({
-        url: "/hotels",
+        url:
+          "/hotels" +
+          `?&city=${this.$store.state.hotel.setcitydata.id}&_limit=${this.limit}`,
         params: {
-          city: this.$store.state.hotel.setcitydata.id,
-          //条数
-          _limit: limit,
           _start: pageindex //页数
         }
       }).then(res => {
-        // data是城市的数组
-        // console.log(res);
         const { data } = res.data;
-        console.log(data);
-        this.list = [];
-        this.list = data;
+        this.$emit("myclick", res.data);
         this.$store.commit("hotel/setHotellist", data);
-        return res.config.params;
+
+        // return data.id;
       });
-      // });
     }
   }
 };
