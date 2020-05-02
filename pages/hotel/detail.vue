@@ -54,15 +54,27 @@ export default {
     Map,
     Content
   },
+  data(){
+    return{
+       
+    }
+  },
   mounted(){
+    console.log(this.$route);
+    
     this.$axios({
       url:'/hotels',
       params:{
        id: this.$route.query.id,
-       city:197
       }
     }).then(res=>{
       console.log(res);
+      // 解构数据
+
+      const { data } = res.data
+      console.log(data);
+     
+      
       
     })
   }
