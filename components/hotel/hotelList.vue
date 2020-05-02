@@ -1,63 +1,44 @@
 <template>
   <div>
-    <div
-      class="hote"
-      v-for="(item, index) in list"
-      :key="index"
-      @click="
-        $router.push({
-          path: '/hotel/detail',
-          queryurl: item.id
-        })
-      "
-    >
+    <div class="hote" v-for="(item,index) in list" :key="index">
       <div class="hoteimg">
         <a href="#">
-          <img :src="item.photos" />
+          <img src="../../static/images/123.jpg" alt />
         </a>
       </div>
       <div class="hotetitle">
         <h4>
-          <a href="#">{{ item.name }}</a>
+          <a href="#">锦江之星(吴泾店)</a>
         </h4>
-        <span class="location">{{ item.alias }}</span>
+        <span class="location">jin jiang zhi xing (shang hai min hang wu jing dian)</span>
         <div class="evaluate">
-          <!-- v-model="value" -->
           <el-rate
-            :value="item.stars"
+            v-model="value"
             disabled
             show-score
             text-color="#ff9900"
-            score-template="{value}"
+            score-template="{item.stars}"
           ></el-rate>
           <span class="commonality">17</span>条评价
           <span class="commonality">62</span>篇游记
         </div>
         <i class="iconfont iconlocation"></i>
-        <span class="place">位于: {{ item.address }}</span>
+        <span class="place">位于: {{item.address}}</span>
       </div>
       <div class="hotelist">
-        <p v-for="(item2, index2) in item.products" :key="index2">
-          <span>{{ item2.name }}</span>
+        <a
+          href="https://hotels.ctrip.com/hotel/694679.html"
+          v-for="(item2,index2) in item.products"
+          :key="index2"
+        >
+          <span>{{item2.name}}</span>
           <span>
-            <em class="commonality">￥{{ item2.price }}</em>
+            <em class="commonality">￥{{item2.price}}</em>
             起
             <i class="el-icon-arrow-right"></i>
           </span>
-        </p>
+        </a>
       </div>
-    </div>
-    <div class="block">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[10, 20, 30, 50]"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      >
-        <!--   -->
-      </el-pagination>
     </div>
   </div>
 </template>
@@ -66,94 +47,47 @@
 export default {
   data() {
     return {
-      list: [],
-      currentPage4: 1, //当前页
-      total: 0 //总页数
+      value: "",
+      list: []
     };
   },
   mounted() {
     this.$axios({
-      url: "/hotels",
-      params: {
-        city: this.$store.state.hotel.setcitydata.id
-      }
+      url: "/hotels"
     }).then(res => {
-      const { data } = res.data;
       console.log(res);
-      console.log(data);
-      this.total = res.data.total;
+      const { data } = res.data;
       this.list = data;
+      //   const arr = this.list.stars.map(v => {
+      //     return v;
+      //   });
+      //   this.value = arr;
     });
-  },
-  methods: {
-    //条数数触发
-    handleSizeChange(limit) {
-      console.log(limit);
-
-      this.getHotel("", limit);
-    },
-    //当前页改变时触发
-    handleCurrentChange(page) {
-      console.log(page);
-      this.getHotel(page);
-    },
-    // 封装请求酒店列表的方法
-    getHotel(pageindex, limit) {
-      // 请求和value相关的城市
-      console.log(pageindex);
-
-      return this.$axios({
-        url: "/hotels",
-        params: {
-          city: this.$store.state.hotel.setcitydata.id,
-          //条数
-          _limit: limit,
-          _start: pageindex //页数
-        }
-      }).then(res => {
-        // data是城市的数组
-        // console.log(res);
-        const { data } = res.data;
-        console.log(data);
-        this.list = [];
-        this.list = data;
-        this.$store.commit("hotel/setHotellist", data);
-        return res.config.params;
-      });
-      // });
-    }
   }
 };
 </script>
 
 <style lang="less" scoped>
-.block {
-  text-align: center;
-  margin: 20px 0;
-}
 a:hover {
   color: #000;
 }
 .hote {
+  margin: 0 auto;
+  width: 1020px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-
+  padding: 25px 0;
   border-bottom: 1px solid #eee;
 }
 .hoteimg {
-  flex: 1;
-  object-fit: contain; //让图片不变形
   img {
-    flex-shrink: 0; //防止图片在flex布局下被挤压
-    object-fit: cover;
     width: 320px;
-    height: 200px;
     padding: 0 10px;
   }
 }
 .hotetitle {
-  flex: 2;
+  width: 400px;
   margin-bottom: 120px;
   h4 {
     font-weight: 400;
@@ -181,20 +115,19 @@ a:hover {
   }
 }
 .hotelist {
-  flex: 1;
+  width: 235px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   line-height: 50px;
   padding: 0 30px;
-  p {
+  a {
     display: flex;
-    cursor: pointer;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #eee;
     padding: 0 20px;
   }
-  p:hover {
+  a:hover {
     background-color: #eee;
     color: #000;
   }
