@@ -352,6 +352,7 @@ export default {
         zoom: 8 //级别
       });
       this.map = map;
+      this.markersmap(this.$store.state.hotel.hoteldefaultlist);
       map.clearMap(); // 清除地图覆盖物
     }, 10);
     this.$axios({
