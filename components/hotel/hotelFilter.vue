@@ -1,9 +1,11 @@
 <template>
   <div>
-    <script
+    <script src="https://webapi.amap.com/loader.js"></script>
+
+    <!-- <script
       type="text/javascript"
       src="https://webapi.amap.com/maps?v=1.4.15&key=4e7b717582fe951d6aeb7920826f06e0&plugin=AMap.CitySearch"
-    ></script>
+    ></script>-->
     <el-row>
       <el-col :span="24">
         <div class="grid-content bg-purple-dark">
@@ -308,7 +310,20 @@
     <!-- <div v-bind="hotelFilter"></div> -->
   </div>
 </template>
-
+<script type="text/javascript" >
+AMapLoader.load({
+  key: "4e7b717582fe951d6aeb7920826f06e0", //首次调用load必须填写key
+  version: "2.0", //JSAPI 版本号
+  plugins: ["AMap.CitySearch"] //同步加载的插件列表
+})
+  .then(AMap => {
+    var map = new AMap.Map("container");
+    map.addControl(new AMap.Scale());
+  })
+  .catch(e => {
+    console.error(e); //加载错误提示
+  });
+</script>
 <script>
 export default {
   props: {
@@ -431,12 +446,18 @@ export default {
           text: "oo"
           //级别
         });
+        var infoWindow = new AMap.InfoWindow({
+          offset: new AMap.Pixel(0, -30)
+        });
         pp.on("mouseover", e => {
-          pp.setLabel({
-            offset: new AMap.Pixel(-5, -5), //设置文本标注偏移量
-            content: `<div class='info1'>${marker.name}</div>`, //设置文本标注内容
-            direction: "top" //设置文本标注方位
-          });
+          // pp.setLabel({
+          //   offset: new AMap.Pixel(-5, -5), //设置文本标注偏移量
+          //   content: `<div class='info1'>${marker.name}</div>`, //设置文本标注内容
+          //   direction: "top" //设置文本标注方位
+          // });
+
+          infoWindow.setContent(marker.name);
+          infoWindow.open(map, e.target.getPosition());
         });
         pp.on("mouseout", e => {
           pp.setLabel({
