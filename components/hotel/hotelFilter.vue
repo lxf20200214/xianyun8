@@ -2,7 +2,7 @@
   <div>
     <script
       type="text/javascript"
-      src="https://a.amap.com/jsapi_demos/static/demo-center/data/food_1.4.15.js"
+      src="https://webapi.amap.com/maps?v=1.4.15&key=4e7b717582fe951d6aeb7920826f06e0&plugin=AMap.CitySearch"
     ></script>
     <el-row>
       <el-col :span="24">
@@ -82,7 +82,6 @@
                     >
                   </div>
                 </el-row>
-
                 <!-- readonly是否只读 -->
                 <el-input
                   readonly
@@ -339,6 +338,7 @@
         </div>
       </el-col>
     </el-row>
+    <div v-bind="hotelFilter"></div>
   </div>
 </template>
 
@@ -352,7 +352,9 @@ export default {
         value2: "",
         value3: ""
       },
-      //复选框的内容
+
+      //加载
+      maploading: true,
       map: {}, // 地图对象
       city: "",
       hotelcityid: "", //城市id
@@ -367,25 +369,27 @@ export default {
       assetscheckList: [], //设施复选框
       brandscheckList: [], //品牌的列表
       count: 0, //滚动条的值
-      markers: [],
+      markerslist: [],
       levels: {},
       inputtext: "" //人数输入框的值
     };
+  },
+  beforeMount() {
+    this.markerslist = this.$store.state.hotel.hotellist;
+    console.log(this.markerslist);
   },
   mounted() {
     setTimeout(() => {
       let map = new AMap.Map("container", {
         resizeEnable: true,
-        zoom: 13 //级别
+        zoom: 8 //级别
         // center: position //中心点坐标
       });
       this.map = map;
-      map.clearMap(); // 清除地图覆盖物
+      this.hotelcityid = this.$store.state.hotel.setcitydata.id;
       this.getCities(this.hotelcityid);
+      map.clearMap(); // 清除地图覆盖物
     }, 10);
-    console.log(this.$store.state.hotel.setcitydata);
-    this.hotelcityid = this.$store.state.hotel.setcitydata.id;
-    console.log(this.hotelcityid);
     this.$axios({
       url: "/hotels/options"
     }).then(res => {
@@ -449,7 +453,7 @@ export default {
         markers.push({
           name: item.name,
           content: `<div class="marker-route marker-marker-bus-from ">
-            <span class="markericon " 
+            <span class="markericon "
             v-on:mouseover='ourr'
             style='background-image: url("https://webapi.amap.com/theme/v1.3/markers/b/mark_b.png");
              display: inline-block;
@@ -471,6 +475,7 @@ export default {
           content: marker.content,
           position: [marker.position[0], marker.position[1]],
           title: marker.name
+          //级别
         });
 
         pp.on("mouseover", e => {
@@ -506,6 +511,12 @@ export default {
     visiblepeople() {
       this.visible = false;
       this.inputtext = this.form.value2 + "  " + this.form.value3;
+    }
+  },
+  //监听
+  computed: {
+    hotelFilter() {
+      return console.log(this.markerslist + "变化了");
     }
   }
 };

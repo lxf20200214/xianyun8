@@ -1,9 +1,5 @@
 <template>
   <div>
-    <script
-      type="text/javascript"
-      src="https://webapi.amap.com/maps?v=1.4.15&key=4e7b717582fe951d6aeb7920826f06e0&plugin=AMap.CitySearch"
-    ></script>
     <section class="container">
       <el-row class="breadcrumb">
         <el-col :span="24">
@@ -31,7 +27,10 @@
     <!-- <nuxt-link :to="`/hotel/detail`">酒店详情</nuxt-link> -->
   </div>
 </template>
-
+<script
+  type="text/javascript"
+  src="https://webapi.amap.com/maps?v=1.4.15&key=4e7b717582fe951d6aeb7920826f06e0&plugin=AMap.CitySearch"
+></script>
 <script>
 import HotelFilter from "../../components/hotel/hotelFilter";
 import hotelList from "@/components/hotel/hotelList.vue";
@@ -74,7 +73,7 @@ export default {
           }
         });
       });
-    }, 10);
+    }, 9);
   }
 };
 </script>
