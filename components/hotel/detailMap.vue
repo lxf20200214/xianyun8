@@ -43,13 +43,14 @@ export default {
           adname: "海珠区",
           name: "广州塔",
           cityName: "广州",
-          kilometre:'1.5公里'
+          kilometre: "1.5公里"
         }
       ]
     };
   },
   mounted() {
-    const map = new AMap.Map("box", {
+ setTimeout(() => {
+      const map = new AMap.Map("box", {
       zoom: 11, //级别
       center: [113.35, 23.12] //中心点坐标
     });
@@ -68,26 +69,27 @@ export default {
     // 弹窗内容
     let content = [];
     // 空数组追加内容
-    content.push(`
+      content.push(`
     <div style="width:80px;height:15px;text-align:center; font-size:12px;color:grey; border-radius:20px;"> 
     ${this.pois[0].name}
     </div>`);
-      // 弹窗方法
+    // 弹窗方法
     var info = new AMap.InfoWindow({
-      // 接收内容 
+      // 接收内容
       content: content.join(""),
       // 弹窗偏移值
-      offset: new AMap.Pixel(0,-30)
+      offset: new AMap.Pixel(0, -30)
     });
     // 鼠标移入移出事件
     marker.on("mouseover", function() {
       info.open(map, map.getCenter());
     });
     marker.on("mouseout", function() {
-      info.close()
+      info.close();
     });
     // 给地图添加点标记
     map.add(marker);
+ }, 0);
   },
   methods: {
     // 点击切换tab栏
@@ -110,11 +112,11 @@ export default {
   .list {
     float: left;
     padding-left: 20px;
-    width: 315px;
+    width: 340px;
     height: 370px;
     .list_box {
       overflow-y: auto;
-      width: 315px;
+      width: 100%;
       height: 305px;
       .content {
         height: 40px;
