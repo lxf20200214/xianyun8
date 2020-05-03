@@ -7,8 +7,8 @@
       @click="
         $router.push({
           path: `/hotel/detail`,
-          query:{
-            id:item.id
+          query: {
+            id: item.id
           }
         })
       "
@@ -78,7 +78,8 @@ export default {
       total: 0, //总页数
       city: "",
       cityID: "",
-      limit: 10
+      limit: 1,
+      page1: 5
     };
   },
   mounted() {},
@@ -90,7 +91,10 @@ export default {
     },
     //当前页改变时触发
     handleCurrentChange(page) {
-      this.getHotel(page);
+      this.page1 += 5;
+      console.log(this.page1);
+
+      this.getHotel(this.page1);
       setTimeout(() => {
         this.$router.push({
           path: "/hotel",
