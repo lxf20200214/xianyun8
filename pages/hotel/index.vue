@@ -4,7 +4,6 @@
     <hotelList />
     酒店首页
     <!-- <nuxt-link :to="`/hotel/detail/?id=234`">酒店详情</nuxt-link> -->
-
     <section class="container">
       <el-row class="breadcrumb">
         <el-col :span="24">
@@ -19,15 +18,13 @@
       <el-row class="breadcrumb">
         <el-col :span="24">
           <div class="grid-content bg-purple-dark">
-            <HotelFilter :data="hoteldatalist" @myclick="chengshi" />
+            <HotelFilter />
           </div>
         </el-col>
       </el-row>
       <el-row class="breadcrumb">
         <el-col :span="24">
-          <div class="grid-content bg-purple-dark">
-            <hotelList :data="hoteldatalist" @myclick="pagehotelist" />
-          </div>
+          <div class="grid-content bg-purple-dark"><hotelList /></div>
         </el-col>
       </el-row>
     </section>
@@ -48,8 +45,7 @@ export default {
   },
   data() {
     return {
-      city: "",
-      hoteldatalist: {}
+      city: ""
     };
   },
   mounted() {
@@ -67,74 +63,21 @@ export default {
                 name: result.city
               }
             }).then(res => {
+              // data是城市的数组
               const { data } = res.data;
               // 保存this.form数据到vuex中,供历史记录调用
+              console.log(data[0]);
+
               this.$store.commit("hotel/setcitydata", data[0]);
-              this.getCities(data[0].id);
               this.city = data[0].name;
-              this.$router.push({
-                path: "/hotel",
-                query: {
-                  cityName: data[0].name
-                }
-              });
+              // this.hotelcityid = data[0].id;
+              // this.hotelscenics = data[0].scenics;
+              // this.getCities(this.hotelcityid);
             });
           }
         });
       });
     }, 9);
-  },
-  methods: {
-    // 封装请求酒店列表的方法
-    getCities(value) {
-      // 请求和value相关的城市
-      if (!value) {
-        return;
-      }
-      return this.$axios({
-        url: "/hotels",
-        params: {
-          city: value
-        }
-      }).then(res => {
-        const { data } = res;
-        this.$store.commit("hotel/setHotelefaul11", res.data.data);
-        this.hoteldatalist = data;
-        return res.config.params;
-      });
-      // });
-    },
-    //页数酒店列表
-    pagehotelist(value) {
-      this.hoteldatalist = value;
-      console.log(value);
-    },
-    //城市
-    chengshi(value) {
-      console.log(value);
-
-      if (!value) {
-        return;
-      }
-      this.$axios({
-        url: "/cities",
-        params: {
-          name: value
-        }
-      }).then(res => {
-        const { data } = res.data;
-        // 保存this.form数据到vuex中,供历史记录调用
-        this.$store.commit("hotel/setcitydata", data[0]);
-        this.getCities(data[0].id);
-        this.city = data[0].name;
-        this.$router.push({
-          path: "/hotel",
-          query: {
-            cityName: data[0].name
-          }
-        });
-      });
-    }
   }
 };
 </script>
