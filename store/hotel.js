@@ -4,11 +4,7 @@ export const state = () => {
       scenics: {}
     },
     hotellist: [],
-<<<<<<< HEAD
     hoteldefaultlist: []
-=======
-    map: {}
->>>>>>> dev
   };
 };
 
@@ -20,11 +16,8 @@ export const mutations = {
   },
   setHotellist(state, data) {
     state.hotellist = data;
-<<<<<<< HEAD
   },
   setHotelefaul11(state, data) {
     state.hoteldefaultlist = data;
-=======
->>>>>>> dev
   }
 };
