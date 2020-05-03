@@ -2,7 +2,7 @@
   <div style="width:1000px; margin:0 auto; padding:50px 0">
     <script
       type="text/javascript"
-      src="https://webapi.amap.com/maps?v=1.4.15&key=19ad902c24919f75f56e6c9a61dce958&plugin=AMap.Driving,AMap.CitySearch"
+      src="https://webapi.amap.com/maps?v=1.4.15&key=4e7b717582fe951d6aeb7920826f06e0&plugin=AMap.CitySearch"
     ></script>
     <h2>高德地图</h2>
     <el-row type="flex" align="center" :gutter="80">
@@ -11,7 +11,11 @@
         <div id="container"></div>
       </el-col>
       <el-col :span="12">
-        <el-tabs v-model="activeName" type="card" @tab-click="handleClick(activeName)">
+        <el-tabs
+          v-model="activeName"
+          type="card"
+          @tab-click="handleClick(activeName)"
+        >
           <el-tab-pane label="驾车" name="first"></el-tab-pane>
           <el-tab-pane label="公交" name="second"></el-tab-pane>
           <el-tab-pane label="步行" name="third"></el-tab-pane>
@@ -26,7 +30,12 @@
               <el-input placeholder="终点位置" v-model="end"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" style="width: 100%" @click="handleSearch">查询</el-button>
+              <el-button
+                type="primary"
+                style="width: 100%"
+                @click="handleSearch"
+                >查询</el-button
+              >
             </el-form-item>
           </el-form>
         </div>
@@ -51,8 +60,9 @@ export default {
     //   Amap在模板中导入js文件之后就应该是一个全局变量了
     //  map是一个地图的对象
     var map = new AMap.Map("container", {
-      zoom: 11, //级别
-      center: [113.3245904, 23.1066805] //中心点坐标
+      resizeEnable: true,
+      zoom: 13, //级别
+      center: [116.397428, 39.90923] //中心点坐标
     });
     this.map = map;
     AMap.plugin("AMap.CitySearch", () => {

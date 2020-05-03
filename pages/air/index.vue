@@ -19,10 +19,7 @@
     <!-- 广告 -->
     <el-row type="flex" class="statement">
       <el-col :span="8">
-        <i
-          class="iconfont iconweibiaoti-_huabanfuben"
-          style="color:#409EFF;"
-        ></i>
+        <i class="iconfont iconweibiaoti-_huabanfuben" style="color:#409EFF;"></i>
         <span>100%航协认证</span>
       </el-col>
       <el-col :span="8">
@@ -63,6 +60,7 @@
 
 <script>
 // 导入搜索组件
+
 import SearchForm from "@/components/air/searchForm";
 export default {
   data() {
