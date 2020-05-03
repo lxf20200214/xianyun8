@@ -2,21 +2,47 @@
   <div>
     <div
       class="hote"
+<<<<<<< HEAD
       v-for="(item, index) in data.data"
       :key="index"
       @click="
         $router.push({
           path: `/hotel/detail`,
+<<<<<<< HEAD
           query: {
             id: item.id
+=======
+          query:{
+=======
+      v-for="(item, index) in list"
+      :key="index"
+      @click="
+        $router.push({
+          path: '/hotel/detail',
+          query: {
+>>>>>>> dev
+            id:item.id
+>>>>>>> 9fa0b8a7876c7b2448eecbd10962048fe127a6ed
           }
         })
       "
     >
       <div class="hoteimg">
+<<<<<<< HEAD
+<<<<<<< HEAD
+       <a href="#">
+          <img src="../../static/images/123.jpg" alt />
+          </a>
+=======
         <a href="#">
           <img :src="item.photos" />
         </a>
+>>>>>>> d9d66ce26d5789682806b6a2642973749110e105
+=======
+        <a href="#">
+          <img :src="item.photos" />
+        </a>
+>>>>>>> dev
       </div>
       <div class="hotetitle">
         <h4>
@@ -56,7 +82,11 @@
         :current-page="currentPage4"
         :page-sizes="[10, 20, 30, 50]"
         layout="total, sizes, prev, pager, next, jumper"
+<<<<<<< HEAD
         :total="data.total"
+=======
+        :total="total"
+>>>>>>> dev
       >
         <!--   -->
       </el-pagination>
@@ -74,14 +104,42 @@ export default {
   },
   data() {
     return {
+<<<<<<< HEAD
       currentPage4: 0, //当前页
       total: 0, //总页数
       city: "",
       cityID: "",
+<<<<<<< HEAD
       limit: 1,
       page1: 5
+=======
+      limit: 10
+=======
+      list: [],
+      currentPage4: 1, //当前页
+      total: 0 //总页数
+>>>>>>> dev
+>>>>>>> 9fa0b8a7876c7b2448eecbd10962048fe127a6ed
     };
   },
+<<<<<<< HEAD
+  mounted() {
+    this.$axios({
+      url: "/hotels",
+      params: {
+        city: this.$store.state.hotel.setcitydata.id
+      }
+    }).then(res => {
+
+      // console.log(res);
+      const { data } = res.data;
+      // console.log(res);
+      // console.log(data);
+      this.total = res.data.total;
+      this.list = data;
+    });
+<<<<<<< HEAD
+=======
   mounted() {},
   methods: {
     //条数数触发
@@ -123,6 +181,47 @@ export default {
         // return data.id;
       });
     }
+>>>>>>> d9d66ce26d5789682806b6a2642973749110e105
+=======
+  },
+  methods: {
+    //条数数触发
+    handleSizeChange(limit) {
+      // console.log(limit);
+
+      this.getHotel("", limit);
+    },
+    //当前页改变时触发
+    handleCurrentChange(page) {
+      // console.log(page);
+      this.getHotel(page);
+    },
+    // 封装请求酒店列表的方法
+    getHotel(pageindex, limit) {
+      // 请求和value相关的城市
+      // console.log(pageindex);
+
+      return this.$axios({
+        url: "/hotels",
+        params: {
+          city: this.$store.state.hotel.setcitydata.id,
+          //条数
+          _limit: limit,
+          _start: pageindex //页数
+        }
+      }).then(res => {
+        // data是城市的数组
+        // console.log(res);
+        const { data } = res.data;
+        console.log(data);
+        this.list = [];
+        this.list = data;
+        this.$store.commit("hotel/setHotellist", data);
+        return res.config.params;
+      });
+      // });
+    }
+>>>>>>> dev
   }
 };
 </script>
