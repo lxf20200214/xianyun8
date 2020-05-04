@@ -1,220 +1,133 @@
 <template>
   <div class="container">
     <!-- 面包屑 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
+    <el-breadcrumb separator-class="el-icon-arrow-right" v-for="(v,index) in list" :key="index">
       <el-breadcrumb-item to="/hotel/index">酒店</el-breadcrumb-item>
       <el-breadcrumb-item to="/hotel/index">广州酒店</el-breadcrumb-item>
-      <el-breadcrumb-item>锦江之星(吴泾店)</el-breadcrumb-item>
+      <el-breadcrumb-item>{{v.name}}</el-breadcrumb-item>
     </el-breadcrumb>
 
     <!-- 头部 -->
-    <div class="header">
-      <h2 class="title">锦江之星(吴泾店)</h2>
+    <div class="header" v-for="(item,index) in list" :key="index+1">
+      <h2 class="title">
+       {{item.name}}
+        <!--  -->
+        <span
+          v-for="(i,index) in item.hotellevel"
+          :key="index+4"
+          class="iconfont iconhuangguan"
+          title="热度"
+        ></span>
+      </h2>
       <div class="store_detail">
-        <p>jin jiang zhi xing (shang hai min hang wu jing dian)</p>
-        <p>
-          <span class="iconfont el-icon-location">剑川路165号(近龙吴路)</span>
-        </p>
+      <div> {{item.alias}} </div>
+      <div>
+          <span class="iconfont el-icon-location">{{item.address}}</span>
+        </div>
       </div>
     </div>
     <!-- 图片 -->
     <div class="picture">
       <div class="picture_left">
-        <img src="../../assets/images/hotel-1330834_1920.jpg" alt />
+        <img  :src="content" alt />
       </div>
       <div class="picture_right">
-        <img src="../../assets/images/hotel-1330831_1920.jpg" alt />
-        <img src="../../assets/images/hotel-1330847_1920.jpg" alt class="mr" />
-        <img src="../../assets/images/hotel-1330850_1920.jpg" alt />
-        <img src="../../assets/images/hotel-1330854_1920.jpg" alt class="mr" />
-        <img src="../../assets/images/公寓，床，卧室_colorhub.me_photos_rgBgwx_5616x3748.jpeg" alt />
-        <img
-          src="../../assets/images/床，卧室，家具_colorhub.me_photos_WDPXOX_5616x3652.jpeg"
-          alt
-          class="mr"
-        />
+        <img :src="item.value" alt="" v-for="(item,index) in img " :key="index+3" @click="handleClick(item,index)"> 
       </div>
     </div>
-
-    <!-- 其他推荐 -->
-    <div class="recommend">
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="date" label="价格来源" width="410"></el-table-column>
-        <el-table-column prop="name" label="低价房型" width="410"></el-table-column>
-        <el-table-column prop="address" label="最低价格/每晚" width="180">
-          <!-- <span style="color: #f90;" > </span> 起
-          <span class="iconfont el-icon-arrow-right" style="color: #f90;"></span>-->
-        </el-table-column>
-      </el-table>
-    </div>
-
+        <!-- 其他推荐 -->
+    <DetailContent :data="item.products" v-for="(item,index) in list" :key="index+2"/>
     <!-- 地图  -->
-    <div class="map">
-      <script
-        type="text/javascript"
-        src="https://webapi.amap.com/maps?v=1.4.15&key=e404bbdbce3c1de8d78a5379f2c1577f&plugin=AMap.StationSearch"
-      ></script>
-      <div id="box"></div>
-      <div id="tip" class="info" style="min-width:18rem; display:none;"></div>
-      <span>
-        <div class="input-card" style="width:18rem;  display:none;">
-          <label style="color:grey">公交站点查询</label>
-          <div class="input-item">
-            <div class="input-item-prepend">
-              <span class="input-item-text">站名</span>
-            </div>
-            <input id="stationKeyWord" type="text" value="阜通" />
-          </div>
-          <input id="search" type="button" class="btn" value="查询" />
-        </div>
-      </span>
-      <div class="list">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="风景" name="first">
-            <div class="list_box">
-              <p v-for="(item,index) in 15" :key="index">1231212313212311321312</p>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="交通" name="second">交通</el-tab-pane>
-        </el-tabs>
-      </div>
-    </div>
+    <DetailMap />
     <!-- 基本信息 -->
-    <div class="hotel_information">
-      <el-row class="basic_information">
-        <el-col :span="4">
-          <span>基本信息</span>
-        </el-col>
-        <el-col :span="20" type="felx" class="basic_data">
-          <span>入住时间 :14:00之后</span>
-          <span>离店事件:12:00之前</span>
-          <span>2010年开业/2010年装修</span>
-          <span>酒店规模 153间客房</span>
-        </el-col>
-      </el-row>
-      <el-row class="basic_information">
-        <el-col :span="4">
-          <span>主要设施</span>
-        </el-col>
-        <el-col :span="20" type="felx" class="basic_data">
-          <i class="square">热水壶</i>
-        </el-col>
-      </el-row>
-      <el-row class="basic_information">
-        <el-col :span="4">
-          <span>停车服务</span>
-        </el-col>
-        <el-col :span="20" type="felx" class="basic_data">
-          <span>暂无~</span>
-        </el-col>
-      </el-row>
-      <el-row class="basic_information">
-        <el-col :span="4">
-          <span>品牌信息</span>
-        </el-col>
-        <el-col :span="20" type="felx" class="basic_data">
-          <span style="color:black;">锦江</span>
-        </el-col>
-      </el-row>
-    </div>
+    <DetaiInformation :data="list" />
+
+    <!-- 评分 -->
+    <DetailGrade :data="item" v-for="(item,index) in list " :key="index+5" />
   </div>
 </template>
 
 <script>
+// 导入评分组件
+import DetailGrade from "@/components/hotel/detailGrade";
+// 导入酒店基本信息组件
+import DetaiInformation from "@/components/hotel/detaiInformation";
+// 导入地图组件
+import DetailMap from "@/components/hotel/detailMap";
+// 导入图片跟其他推荐组件
+import DetailContent from "@/components/hotel/detailContent";
 export default {
-  data() {
-    return {
-      activeName: "first",
-      number: [388, 799, 699],
-      tableData: [
-        {
-          date: "携程",
-          name: "高级大床房",
-          address: "¥888 " + " 起  "
-        },
-        {
-          date: "艺龙",
-          name: "温馨文艺型",
-          address: "¥762 " + " 起  "
-        },
-        {
-          date: "Hotels.com",
-          name: "总统套房",
-          address: "¥3999  " + " 起  "
-        }
+  // 注册组件
+  components: {
+    DetailGrade,
+    DetaiInformation,
+    DetailMap,
+    DetailContent
+  },
+  data(){
+    return{
+      list:{
+        // 皇冠 
+        hotellevel:{},
+        // 产品 
+        products:[],
+        // 酒店 
+        hotelassets:[],
+        // 评分 
+        scores:{}
+      },
+        content:require('../../assets/images/290532299510.jpg'),
+      // 大图片默认初始值 
+        path:require('../../assets/images/290532299510.jpg'),
+       // 图片数据
+      img:
+      [
+        {value:require('../../assets/images/090051494634.jpg')},
+        {value:require('../../assets/images/271954226869.jpg')},
+        {value:require('../../assets/images/290434094186.jpg')},
+        {value:require('../../assets/images/290434247095.jpg')},
+        {value:require('../../assets/images/090039224725.jpg')},
+        {value:require('../../assets/images/290534002900.jpg')},
       ]
-    };
-  },
-  mounted() {
-    console.log(this.tableData);
-
-    var map = new AMap.Map("box", {
-      resizeEnable: true,
-      center: [113.35, 23.12], //地图中心点
-      zoom: 13 //地图显示的缩放级别
-    });
-    stationSearch();
-    /*公交站点查询*/
-    function stationSearch() {
-      var stationKeyWord = document.getElementById("stationKeyWord").value;
-      if (!stationKeyWord) return;
-      //实例化公交站点查询类
-      var station = new AMap.StationSearch({
-        pageIndex: 1, //页码
-        pageSize: 60, //单页显示结果条数
-        city: "010" //确定搜索城市
-      });
-      station.search(stationKeyWord, function(status, result) {
-        if (status === "complete" && result.info === "OK") {
-          stationSearch_CallBack(result);
-        } else {
-          document.getElementById("tip").innerHTML = JSON.stringify(result);
-        }
-      });
     }
-    /*公交站点查询返回数据解析*/
-    function stationSearch_CallBack(searchResult) {
-      var stationArr = searchResult.stationInfo;
-      var searchNum = stationArr.length;
-      if (searchNum > 0) {
-        document.getElementById("tip").innerHTML =
-          "查询结果：共" + searchNum + "个相关站点";
-        for (var i = 0; i < searchNum; i++) {
-          var marker = new AMap.Marker({
-            icon: new AMap.Icon({
-              image:
-                "https://a.amap.com/jsapi_demos/static/resource/img/pin.png",
-              size: new AMap.Size(32, 32),
-              imageSize: new AMap.Size(32, 32)
-            }),
-            offset: new AMap.Pixel(-16, -32),
-            position: stationArr[i].location,
-            map: map,
-            title: stationArr[i].name
-          });
-          marker.info = new AMap.InfoWindow({
-            content: stationArr[i].name,
-            offset: new AMap.Pixel(0, -30)
-          });
-          marker.on("mouseover", function(e) {
-            e.target.info.open(map, e.target.getPosition());
-          });
-        }
-        map.setFitView();
+  },
+  mounted(){
+  setTimeout(() => {
+      this.$axios({
+      url:'/hotels',
+      params:{
+       id: this.$route.query.id,
       }
-    }
-    document.getElementById("search").onclick = stationSearch;
+    }).then(res=>{
+      // 解构数据
+      const { data } = res.data
+      console.log(data);
+      // 赋值到data进行渲染
+        this.list = data 
+        // console.log(this.list[0].scores);
+        
+    })
+  }, 0);
   },
-  methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
-    }
+  methods:{
+      // 点击放大图片事件
+    handleClick(item,index){
+      // 点击到的图片把路径赋值到path
+      // 把小图片给到暂时数据接收
+      this.content = item.value,
+      // 把大图片给到小图片 
+      item.value = this.path
+      // 再把暂存数据的图片给回大图片
+      this.path=this.content
+
+    },
   }
 };
 </script>
 
 <style scoped lang="less">
 .container {
+  
   padding: 5px;
   width: 1000px;
   margin: 0 auto;
@@ -225,6 +138,9 @@ export default {
   }
   .header {
     margin-top: 20px;
+    .iconhuangguan {
+      color: #ff9900;
+    }
     .title {
       font-weight: normal;
     }
@@ -233,95 +149,45 @@ export default {
     }
   }
   .picture {
-    height: 360px;
-    margin-top: 30px;
-    img {
-      cursor: pointer;
-    }
-    .picture_left {
-      float: left;
-      width: 640px;
-      // width: 66%;
-      height: 360px;
-      img {
-        display: inline-block;
-        height: 100%;
-        width: 100%;
-      }
-    }
-    .picture_right {
-      width: 330px;
-      float: right;
-      height: 360px;
-
-      img {
-        float: right;
-        width: 160px;
-        height: 113px;
-      }
-    }
-    .picture_right img:nth-child(n + 2) {
-      margin-bottom: 10px;
-    }
-    .mr {
-      margin-right: 10px;
-    }
-  }
-  .recommend {
-    margin-top: 50px;
+  height: 360px;
+  margin-top: 30px;
+  img {
     cursor: pointer;
-    /deep/ .el-table__row .el-table_1_column_3 {
-      color: #f90;
-    }
   }
-  .map {
-    height: 420px;
-    margin-top: 50px;
-    #box {
-      width: 650px;
-      height: 370px;
-      float: left;
-    }
-    .list {
-      float: left;
-      padding-left: 20px;
-      width: 315px;
-      height: 370px;
-      background-color: pink;
-      .list_box {
-        overflow-y: auto;
-        width: 315px;
-        height: 250px;
-      }
-    }
-  }
-  .hotel_information {
-    background-color: pink;
-    height: 200px;
-    .basic_information {
-      height: 50px;
-      border: 1px solid #eee;
-    }
-    .basic_data {
-      height: 50px;
-      color: grey;
-      font-size: 14px;
-    }
-    span {
+  .picture_left {
+    float: left;
+    width: 640px;
+    // width: 66%;
+    height: 360px;
+    img {
       display: inline-block;
-      padding: 10px 20px;
-      line-height: 30px;
-    }
-    .square {
-      display: inline-block;
-      width: 64px;
-      height: 30px;
-      margin: 10px 20px;
-      background-color: #eeeeee;
-      border-radius: 5px;
-      text-align: center;
-      line-height: 30px;
+      height: 100%;
+      width: 100%;
     }
   }
+  .picture_right {
+    width: 330px;
+    float: right;
+    height: 360px;
+
+    img {
+      float: right;
+      width: 160px;
+      height: 113px;
+
+      
+    }
+    img:nth-child(odd){
+    margin-left: 10px;
+    }
+    img:nth-child(-n+4){
+   margin-bottom: 10px;
+    }
+  }
+ 
+  .mr {
+    margin-right: 10px;
+  }
+}
 }
 </style>

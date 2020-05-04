@@ -1,103 +1,179 @@
 <template>
   <div>
-    <div class="hote" v-for="(item,index) in list" :key="index">
+    <div
+      class="hote"
+      v-for="(item, index) in data.data"
+      :key="index"
+      @click="
+        $router.push({
+          path: `/hotel/detail`,
+          query: {
+            id: item.id
+          }
+        })
+      "
+    >
       <div class="hoteimg">
         <a href="#">
-          <img :src="item.photos" alt />
+          <img :src="item.photos" />
         </a>
       </div>
       <div class="hotetitle">
         <h4>
-          <a href="#">{{item.name}}</a>
+          <a href="#">{{ item.name }}</a>
         </h4>
-        <div class="graded">
-          <span class="location">{{item.alias}}</span>
-        </div>
+        <span class="location">{{ item.alias }}</span>
 
         <div class="evaluate">
+          <!-- v-model="value" -->
           <el-rate
-            v-model="value"
+            :value="item.stars"
             disabled
             show-score
             text-color="#ff9900"
             score-template="{value}"
-            @change="item.stars"
           ></el-rate>
           <span class="commonality">17</span>条评价
           <span class="commonality">62</span>
           篇游记
         </div>
         <i class="iconfont iconlocation"></i>
-        <span class="place">位于: {{item.address}}</span>
+        <span class="place">位于: {{ item.address }}</span>
       </div>
       <div class="hotelist">
-        <a
-          href="https://hotels.ctrip.com/hotel/694679.html"
-          v-for="(item2,index2) in item.products"
-          :key="index2"
-        >
-          <span>{{item2.name}}</span>
+        <p v-for="(item2, index2) in item.products" :key="index2">
+          <span>{{ item2.name }}</span>
           <span>
-            <em class="commonality">￥{{item2.price}}</em>
+            <em class="commonality">￥{{ item2.price }}</em>
             起
             <i class="el-icon-arrow-right"></i>
           </span>
-        </a>
+        </p>
       </div>
+    </div>
+    <div class="block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage4"
+        :page-sizes="[10, 20, 30, 50]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="data.total"
+      >
+        <!--   -->
+      </el-pagination>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    data: {
+      type: Object,
+      default: {}
+    }
+  },
   data() {
     return {
-      value: 3.4,
-      list: []
+      currentPage4: 0, //当前页
+      total: 0, //总页数
+      city: "",
+      cityID: "",
+      limit: 1,
+      page1: 5
     };
   },
 
   mounted() {
     this.$axios({
-      url: "/hotels"
+      url: "/hotels",
+      params: {
+        city: this.$store.state.hotel.setcitydata.id
+      }
     }).then(res => {
-      console.log(res);
+      // console.log(res);
       const { data } = res.data;
+      // console.log(res);
+      // console.log(data);
+      this.total = res.data.total;
       this.list = data;
     });
+  },
+  methods: {
+    //条数数触发
+    handleSizeChange(limit) {
+      // console.log(limit);
+
+      this.getHotel("", limit);
+    },
+    //当前页改变时触发
+    handleCurrentChange(page) {
+      // console.log(page);
+
+      this.page1 += 5;
+      this.getHotel(this.page1).then(data => {
+        this.$emit("myclick", data);
+      });
+      this.$router.push({
+        path: "/hotel",
+        query: {
+          cityName: this.$store.state.hotel.setcitydata.name,
+          page: page
+        }
+      });
+    },
+    // 封装请求酒店列表的方法
+    getHotel(pageindex) {
+      return this.$axios({
+        url:
+          "/hotels" +
+          `?&city=${this.$store.state.hotel.setcitydata.id}&_limit=`,
+        params: {
+          //条数
+          // _limit: limit,
+          _start: pageindex //页数
+        }
+      }).then(res => {
+        const { data } = res.data;
+        this.$store.commit("hotel/setHotellist", data);
+        return res.data;
+      });
+      // });
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
+.block {
+  text-align: center;
+  margin: 20px 0;
+}
 a:hover {
   color: #000;
 }
 .hote {
-  margin: 0 auto;
-  width: 1020px;
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
-  height: 210px;
-  padding: 25px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   border-bottom: 1px solid #eee;
 }
 .hoteimg {
-  float: left;
-  height: 210px;
-  a {
-    img {
-      width: 300px;
-      height: 210px;
-      padding: 0 10px;
-    }
+  object-fit: contain; //让图片不变形
+  img {
+    flex-shrink: 0; //防止图片在flex布局下被挤压
+    object-fit: cover;
+    width: 320px;
+    height: 200px;
+    padding: 0 10px;
   }
 }
 
 .hotetitle {
-  float: left;
-  width: 400px;
+  flex: 2;
+  margin-bottom: 120px;
 
   h4 {
     font-weight: 400;
@@ -137,20 +213,21 @@ a:hover {
 }
 
 .hotelist {
-  float: left;
-  width: 235px;
-  // display: flex;
-  // flex-direction: column-reverse;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
   line-height: 50px;
   padding: 0 30px;
-  a {
+  p {
     display: flex;
+    cursor: pointer;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #eee;
     padding: 0 20px;
   }
-  a:hover {
+  p:hover {
     background-color: #eee;
     color: #000;
   }
