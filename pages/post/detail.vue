@@ -1,5 +1,5 @@
 <template>
-  <div class="contianer">
+  <div class="container">
     <el-row type="flex" justify="space-between">
       <div class="left">
         <PostItem :data="data" v-show="data.title" :total="total" />
@@ -14,11 +14,12 @@
             :disable-transitions="false"
             @close="handleClose(tagName)"
             v-if="tagName"
-          >回复@{{tagName}}</el-tag>
+            >回复@{{ tagName }}</el-tag
+          >
           <div class="edit">
             <el-input
               type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
+              :autosize="{ minRows: 2, maxRows: 4 }"
               placeholder="请输入内容"
               v-model="textarea"
               resize="none"
@@ -34,7 +35,7 @@
                 file-list:上传的图片列表
               -->
               <el-upload
-                :action="$axios.defaults.baseURL+'/upload'"
+                :action="$axios.defaults.baseURL + '/upload'"
                 list-type="picture-card"
                 :on-preview="handlePictureCardPreview"
                 :on-remove="handleRemove"
@@ -48,14 +49,20 @@
                 <img width="100%" :src="dialogImageUrl" alt />
               </el-dialog>
               <div>
-                <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+                <el-button size="mini" type="primary" @click="handleSubmit"
+                  >提交</el-button
+                >
               </div>
             </el-row>
           </div>
         </div>
 
         <div class="cmt-list">
-          <div class="cmt-item" v-for="(item,index) in commentData" :key="index">
+          <div
+            class="cmt-item"
+            v-for="(item, index) in commentData"
+            :key="index"
+          >
             <PostComment :data="item" @getReply="getReply" />
           </div>
         </div>
@@ -250,7 +257,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.contianer {
+.container {
   width: 1000px;
   margin: 0 auto;
   padding-top: 20px;
