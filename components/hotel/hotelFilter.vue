@@ -331,13 +331,11 @@ export default {
       assetscheckList: [], //设施复选框
       brandscheckList: [], //品牌的列表
       count: 0, //滚动条的值
-      markerslist: [], //地图列表
       levels: {},
       inputtext: "" //人数输入框的值
     };
   },
   mounted() {
-    // this.markersmap(this.$store.state.hotel.hoteldefaultlist);
     this.$axios({
       url: "/hotels/options"
     }).then(res => {
@@ -421,14 +419,12 @@ export default {
             });
             return markers;
           });
-
           markers.forEach((marker, index) => {
             let pp = new AMap.Marker({
               map: this.map,
               content: marker.content,
               position: [marker.position[0], marker.position[1]],
-              title: marker.name,
-              text: "oo"
+              title: marker.name
               //级别
             });
             pp.on("mouseover", e => {
