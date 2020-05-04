@@ -1,7 +1,9 @@
 <template>
   <div>
     <!-- 头部组件 -->
+
     <Header />
+
     <!-- 内容占位组件 -->
     <nuxt />
     <!-- 页脚组件 -->
@@ -68,9 +70,9 @@ a {
   text-decoration: none;
   color: inherit;
 }
-a:hover {
+/* a:hover {
   color: orange;
-}
+} */
 em,
 i {
   font-style: normal;

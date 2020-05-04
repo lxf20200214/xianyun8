@@ -23,18 +23,31 @@
           href="#"
           id="search"
           @click="handleSearch1(item)"
-          v-for="(item,index) in list"
+          v-for="(item, index) in list"
           :key="index"
-        >{{item}}</a>
+          >{{ item }}</a
+        >
       </div>
       <div class="post-title">
         <h4>推荐攻略</h4>
-        <el-button type="primary" icon="el-icon-edit">写日记</el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="clicKcreate"
+          >写日记</el-button
+        >
       </div>
 
-      <div class="post-list" v-for="(item,index) in flightsData" :key="index">
-        <postList :data="item" v-if="item.images.length >=3" />
-        <postList2 :data="item" v-if="item.images.length ===1" />
+      <div class="post-list" v-for="(item, index) in flightsData" :key="index">
+        <nuxt-link
+          :to="{
+            path: `/post/detail`,
+            query: {
+              id: item.id
+            }
+          }"
+        >
+          <postList :data="item" v-if="item.images.length >= 3" />
+
+          <postList2 :data="item" v-if="item.images.length === 1" />
+        </nuxt-link>
       </div>
       <div class="el-row">
         <el-pagination
@@ -44,7 +57,7 @@
           :page-sizes="[1, 2, 3, 4]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
+          :total="list.length"
         ></el-pagination>
       </div>
     </div>
@@ -66,7 +79,6 @@ export default {
       value: "",
       pageIndex: 0,
       pageSize: 3,
-      total: 3,
       getList: {},
       flightsData: [],
       list: ["广州", "上海", "北京"]
@@ -105,7 +117,9 @@ export default {
       this.value = item;
       this.listData();
     },
-
+    clicKcreate() {
+      this.$router.push("post/create");
+    },
     listData() {
       const config = {
         url: "/posts",
@@ -132,7 +146,7 @@ export default {
 };
 </script>
 
-<style  scoped lang="less">
+<style scoped lang="less">
 .w {
   padding: 20px 0;
   margin: 0 auto;

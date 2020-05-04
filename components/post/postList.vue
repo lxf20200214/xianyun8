@@ -4,13 +4,9 @@
       <h4>{{data.title}}</h4>
     </a>
 
-    <p>
-      <a href="#">{{data.summary}}</a>
-    </p>
+    <p>{{data.summary}}</p>
     <div class="card-images">
-      <img :src="data.images[0]" alt />
-      <img :src="data.images[1]" class="img2" />
-      <img :src="data.images[2]" alt />
+      <img :src="item" alt v-for="(item,index) in data.images" :key="index" />
     </div>
     <div class="post-info">
       <div class="post-info-left">
@@ -40,11 +36,18 @@ export default {
       type: Object,
       default: {}
     }
+  },
+  mounted() {
+    this.data.images = this.data.images.slice(0, 3);
+    console.log(this.data.images);
   }
 };
 </script>
 
 <style lang='less' scoped>
+a:hover {
+  color: orange;
+}
 .post-item {
   width: 100%;
   padding: 20px 0;
@@ -81,7 +84,7 @@ export default {
       height: 150px;
       object-fit: cover;
     }
-    .img2 {
+    img:nth-child(2) {
       padding: 0 20px;
     }
   }

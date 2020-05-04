@@ -25,6 +25,7 @@
           <a href="#">{{ item.name }}</a>
         </h4>
         <span class="location">{{ item.alias }}</span>
+
         <div class="evaluate">
           <!-- v-model="value" -->
           <el-rate
@@ -35,7 +36,8 @@
             score-template="{value}"
           ></el-rate>
           <span class="commonality">17</span>条评价
-          <span class="commonality">62</span>篇游记
+          <span class="commonality">62</span>
+          篇游记
         </div>
         <i class="iconfont iconlocation"></i>
         <span class="place">位于: {{ item.address }}</span>
@@ -82,7 +84,26 @@ export default {
       page1: 5
     };
   },
+<<<<<<< HEAD
   mounted() {},
+=======
+
+  mounted() {
+    this.$axios({
+      url: "/hotels",
+      params: {
+        city: this.$store.state.hotel.setcitydata.id
+      }
+    }).then(res => {
+      // console.log(res);
+      const { data } = res.data;
+      // console.log(res);
+      // console.log(data);
+      this.total = res.data.total;
+      this.list = data;
+    });
+  },
+>>>>>>> 16645447dfd49ecb30e4d97965604439ac6488a8
   methods: {
     //条数数触发
     handleSizeChange(limit) {
@@ -144,7 +165,6 @@ a:hover {
   border-bottom: 1px solid #eee;
 }
 .hoteimg {
-  flex: 1;
   object-fit: contain; //让图片不变形
   img {
     flex-shrink: 0; //防止图片在flex布局下被挤压
@@ -154,22 +174,35 @@ a:hover {
     padding: 0 10px;
   }
 }
+
 .hotetitle {
   flex: 2;
   margin-bottom: 120px;
+
   h4 {
     font-weight: 400;
     font-size: x-large;
+    margin-bottom: 5px;
+  }
+  .graded {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    span {
+      margin-right: 5px;
+    }
   }
   .location {
     color: #999;
   }
   .evaluate {
-    display: flex;
-    align-items: center;
     line-height: 50px;
+    display: flex;
+
+    align-items: center;
     span {
       padding: 0 5px 0 20px;
+      float: left;
     }
   }
   i {
@@ -179,13 +212,15 @@ a:hover {
     -webkit-font-smoothing: antialiased;
   }
   .place {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
+
 .hotelist {
   flex: 1;
   display: flex;
   flex-direction: column;
+
   line-height: 50px;
   padding: 0 30px;
   p {

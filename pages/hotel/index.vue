@@ -32,6 +32,7 @@
 import MapLoader from "@/plugins/amap.js";
 import HotelFilter from "../../components/hotel/hotelFilter";
 import hotelList from "@/components/hotel/hotelList.vue";
+
 export default {
   components: {
     HotelFilter,

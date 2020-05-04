@@ -1,24 +1,20 @@
 <template>
-  <div class="menus-body">
-    <div
-      class="menu"
-      v-for="(item,index) in list"
-      :key="index"
-      @mouseenter="seenter(index)"
-      @mouseleave="seleave(index)"
-    >
-      <div class="menu-item">
-        <span>{{item.type}}</span>
-        <i class="el-icon-arrow-right"></i>
-      </div>
+  <div>
+    <div class="menus-body" @mouseleave="handleLeave">
+      <div class="menu" v-for="(item,index) in list" :key="index" @mouseenter="handleEnter(index)">
+        <div class="menu-item">
+          <span>{{item.type}}</span>
+          <i class="el-icon-arrow-right"></i>
+        </div>
 
-      <div class="listpost" v-if="index===index2">
-        <div v-for="(item2,index2) in item.children" :key="index2">
-          <a href="#">
-            <i class="commonality">{{index2+1}}</i>
-            <em class="commonality">{{item2.city}}</em>
-            <span>{{item2.desc}}</span>
-          </a>
+        <div class="listpost" v-if="current !== false">
+          <div v-for="(item2,index2) in item.children" :key="index2">
+            <a href="#">
+              <i class="commonality">{{index2+1}}</i>
+              <em class="commonality">{{item2.city}}</em>
+              <span>{{item2.desc}}</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -29,7 +25,8 @@
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      current: false
     };
   },
   mounted() {
@@ -43,11 +40,16 @@ export default {
     });
   },
   methods: {
-    seenter(index) {
+    // 左侧菜单鼠标移入的事件
+    handleEnter(index) {
+      // 记录当前的索引
+      this.current = index;
       console.log(index);
     },
-    seleave(index) {
-      console.log(index);
+    // 鼠标离开时候触发的事件
+    handleLeave() {
+      this.current = false;
+      console.log(this.current);
     }
   }
 };
