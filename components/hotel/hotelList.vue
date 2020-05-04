@@ -1,6 +1,8 @@
 <template>
   <div>
+    <div v-if="data.data==''">没有符合条件的数据</div>
     <div
+      v-else
       class="hote"
       v-for="(item, index) in data.data"
       :key="index"
@@ -76,27 +78,11 @@ export default {
     return {
       currentPage4: 0, //当前页
       total: 0, //总页数
-      city: "",
-      cityID: "",
       limit: 1,
       page1: 5
     };
   },
-  mounted() {
-    this.$axios({
-      url: "/hotels",
-      params: {
-        city: this.$store.state.hotel.setcitydata.id
-      }
-    }).then(res => {
-      // console.log(res);
-      const { data } = res.data;
-      // console.log(res);
-      // console.log(data);
-      this.total = res.data.total;
-      this.list = data;
-    });
-  },
+  mounted() {},
   methods: {
     //条数数触发
     handleSizeChange(limit) {
@@ -120,7 +106,7 @@ export default {
         }
       });
     },
-    // 封装请求酒店列表的方法
+    // 封装请求酒店列表页的方法
     getHotel(pageindex) {
       return this.$axios({
         url:
