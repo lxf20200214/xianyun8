@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 头部组件 -->
-    <keep-alive>
-      <Header />
-    </keep-alive>
+
+    <Header />
+
     <!-- 内容占位组件 -->
     <nuxt />
     <!-- 页脚组件 -->
