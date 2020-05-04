@@ -3,24 +3,29 @@
     <div class="hote" v-for="(item,index) in list" :key="index">
       <div class="hoteimg">
         <a href="#">
-          <img src="../../static/images/123.jpg" alt />
+          <img :src="item.photos" alt />
         </a>
       </div>
       <div class="hotetitle">
         <h4>
-          <a href="#">锦江之星(吴泾店)</a>
+          <a href="#">{{item.name}}</a>
         </h4>
-        <span class="location">jin jiang zhi xing (shang hai min hang wu jing dian)</span>
+        <div class="graded">
+          <span class="location">{{item.alias}}</span>
+        </div>
+
         <div class="evaluate">
           <el-rate
             v-model="value"
             disabled
             show-score
             text-color="#ff9900"
-            score-template="{item.stars}"
+            score-template="{value}"
+            @change="item.stars"
           ></el-rate>
           <span class="commonality">17</span>条评价
-          <span class="commonality">62</span>篇游记
+          <span class="commonality">62</span>
+          篇游记
         </div>
         <i class="iconfont iconlocation"></i>
         <span class="place">位于: {{item.address}}</span>
@@ -47,10 +52,11 @@
 export default {
   data() {
     return {
-      value: "",
+      value: 3.4,
       list: []
     };
   },
+
   mounted() {
     this.$axios({
       url: "/hotels"
@@ -58,10 +64,6 @@ export default {
       console.log(res);
       const { data } = res.data;
       this.list = data;
-      //   const arr = this.list.stars.map(v => {
-      //     return v;
-      //   });
-      //   this.value = arr;
     });
   }
 };
@@ -74,34 +76,53 @@ a:hover {
 .hote {
   margin: 0 auto;
   width: 1020px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  height: 210px;
   padding: 25px 0;
   border-bottom: 1px solid #eee;
 }
 .hoteimg {
-  img {
-    width: 320px;
-    padding: 0 10px;
+  float: left;
+  height: 210px;
+  a {
+    img {
+      width: 300px;
+      height: 210px;
+      padding: 0 10px;
+    }
   }
 }
+
 .hotetitle {
+  float: left;
   width: 400px;
-  margin-bottom: 120px;
+
   h4 {
     font-weight: 400;
     font-size: x-large;
+    margin-bottom: 5px;
+  }
+  .graded {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    span {
+      margin-right: 5px;
+    }
   }
   .location {
     color: #999;
   }
   .evaluate {
-    display: flex;
-    align-items: center;
     line-height: 50px;
+    display: flex;
+
+    align-items: center;
     span {
       padding: 0 5px 0 20px;
+      float: left;
     }
   }
   i {
@@ -111,13 +132,15 @@ a:hover {
     -webkit-font-smoothing: antialiased;
   }
   .place {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
+
 .hotelist {
+  float: left;
   width: 235px;
-  display: flex;
-  flex-direction: column-reverse;
+  // display: flex;
+  // flex-direction: column-reverse;
   line-height: 50px;
   padding: 0 30px;
   a {

@@ -43,6 +43,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+a:hover {
+  color: orange;
+}
 .image-text {
   display: flex;
   width: 100%;
@@ -63,7 +66,6 @@ export default {
     width: 100%;
     a {
       h4 {
-        overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         margin-bottom: 15px;
