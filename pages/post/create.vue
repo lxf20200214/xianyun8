@@ -6,14 +6,12 @@
           <h2>发表新攻略</h2>
           <p class="create-desc">分享你的个人游记，让更多人看到哦！</p>
           <el-form ref="form" :model="form" label-width="80px">
-            <el-input v-model="input" placeholder="请输入内容" style="margin-bottom: 22px"></el-input>
-
-            <vue-editor v-model="content" style=" height: 400px;"></vue-editor>
-            <el-form-item label="选择城市" style=" margin-top: 20px;
-">
+            <el-input v-model="form.title" placeholder="请输入内容" style="margin-bottom: 22px"></el-input>
+            <vue-editor v-model="form.content"></vue-editor>
+            <el-form-item label="选择城市" style=" margin-top: 20px;">
               <el-autocomplete
                 class="inline-input"
-                v-model="state2"
+                v-model="form.city"
                 :fetch-suggestions="querySearch"
                 placeholder="请搜索游玩城市"
                 :trigger-on-focus="false"
@@ -23,7 +21,7 @@
           </el-form>
 
           <el-row type="flex" align="middle">
-            <el-button type="primary">发布</el-button>
+            <el-button type="primary" @click="clickDraft">发布</el-button>
             <div class="issue">
               或者
               <a href="#" class="draft">保存到草稿</a>
@@ -79,16 +77,50 @@ export default {
   data() {
     return {
       form: {
-        name: ""
-      },
-      state2: "",
-      content: "",
-      input: ""
+        title: "",
+        content: "",
+        city: ""
+      }
     };
   },
   methods: {
-    handleSelect() {},
-    querySearch() {}
+    handleSelect(item) {
+      this.form.city = item.value;
+    },
+    querySearch(value, cb) {
+      if (!value) {
+        return;
+      }
+      this.$axios({
+        url: "/airs/city",
+        params: {
+          name: value
+        }
+      }).then(res => {
+        console.log(res);
+        const { data } = res.data;
+        const newData = data.map(v => {
+          v.value = v.name;
+          return v;
+        });
+        cb(newData);
+      });
+    },
+    clickDraft() {
+      console.log(this.form);
+      this.$axios({
+        url: "posts",
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ` + this.$store.state.user.userInfo.token
+        },
+        data: this.form
+      }).then(res => {
+        console.log(res);
+        this.$message.success(res.data.message);
+        this.$router.push("/post");
+      });
+    }
   }
 };
 </script>
@@ -135,7 +167,7 @@ export default {
   width: 200px;
   border: 1px solid #ddd;
   padding: 10px;
-  height: 280px;
+  height: 320px;
   h4 {
     margin-bottom: 10px;
     font-weight: 400;
