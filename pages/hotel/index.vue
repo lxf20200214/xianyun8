@@ -29,7 +29,7 @@
   </div>
 </template>
 <script>
-import AMapLoader from "@amap/amap-jsapi-loader";
+// import AMapLoader from "@amap/amap-jsapi-loader";
 import HotelFilter from "../../components/hotel/hotelFilter";
 import hotelList from "@/components/hotel/hotelList.vue";
 export default {
@@ -53,7 +53,7 @@ export default {
         AMap.plugin("AMap.CitySearch", () => {
           let citySearch = new AMap.CitySearch();
           citySearch.getLocalCity((status, result) => {
-            if (status === "complete" && result.info === "OK") {
+            if (!status === "complete" && result.info === "OK") {
               // 查询成功，result即为当前所在城市信息
               // alert("想获取你的位置");
               this.$message.success("你当前所在的城市是:" + result.city);
@@ -62,7 +62,8 @@ export default {
                 params: {
                   name: result.city
                 }
-              }).then(res => {
+              })
+              .then(res => {
                 const { data } = res.data;
                 // 保存this.form数据到vuex中,供历史记录调用
                 this.$store.commit("hotel/setcitydata", data[0]);

@@ -38,9 +38,9 @@
         <!-- 其他推荐 -->
     <DetailContent :data="item.products" v-for="(item,index) in list" :key="index+2"/>
     <!-- 地图  -->
-    <DetailMap />
+    <DetailMap   :data="$store.state.hotel.hotelDetail"  />
     <!-- 基本信息 -->
-    <DetaiInformation :data="list" />
+    <DetaiInformation  :data="$store.state.hotel.hotelDetail"/>
 
     <!-- 评分 -->
     <DetailGrade :data="item" v-for="(item,index) in list " :key="index+5" />
@@ -74,7 +74,9 @@ export default {
         // 酒店 
         hotelassets:[],
         // 评分 
-        scores:{}
+        scores:{},
+        // 地址 
+        location:{}
       },
         content:require('../../assets/images/290532299510.jpg'),
       // 大图片默认初始值 
@@ -105,6 +107,9 @@ export default {
       // 赋值到data进行渲染
         this.list = data 
         // console.log(this.list[0].scores);
+        // 把数据存到store里面
+        // this.$store.commit('hotel/setHoteleDetail',data[0])
+        this.$store.commit('hotel/setHoteleDetail',data)
         
     })
   }, 0);

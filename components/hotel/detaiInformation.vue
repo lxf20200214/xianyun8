@@ -17,7 +17,7 @@
           <span>主要设施</span>
         </el-col>
         <el-col :span="20" type="felx" class="basic_data">
-          <i class="square" v-for="(v,index) in item.hotelassets " :key="index">{{v.name}}</i>
+          <i class="square" v-for="(v,index) in item.hotelassets " :key="index">{{v.name?v.name:value}}</i>
         </el-col>
       </el-row>
       <el-row class="basic_information">
@@ -52,12 +52,13 @@ export default {
   },
   data(){
     return{
-      content:"暂时没有哦~"
+      content:"暂时没有哦~",
+      value:'wifi'
     }
   },
   mounted(){
    setTimeout(() => {
-        console.log(this.data);
+        // console.log(this.data);
    }, 0);
   }
 }
@@ -82,7 +83,8 @@ export default {
     }
     .square {
       display: inline-block;
-      width: 64px;
+      // width: 74px;
+      padding: 0 10px;
       height: 30px;
       margin: 15px 20px;
       background-color: #eeeeee;

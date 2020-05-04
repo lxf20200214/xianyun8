@@ -4,7 +4,9 @@ export const state = () => {
       scenics: {}
     },
     hotellist: [],
-    hoteldefaultlist: []
+    hoteldefaultlist: [],
+    hotelDetail:[]
+  
   };
 };
 
@@ -19,5 +21,8 @@ export const mutations = {
   },
   setHotelefaul11(state, data) {
     state.hoteldefaultlist = data;
+  },
+  setHoteleDetail(state, data) {
+    state.hotelDetail = data;
   }
 };

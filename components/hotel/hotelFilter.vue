@@ -347,7 +347,7 @@
   </div>
 </template>
 <script>
-import AMapLoader from "@amap/amap-jsapi-loader";
+// import AMapLoader from "@amap/amap-jsapi-loader";
 export default {
   data() {
     return {
