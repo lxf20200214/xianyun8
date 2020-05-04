@@ -384,7 +384,6 @@ export default {
     //封装渲染的地图图标
     markersmap(data) {
       if (data == "") {
-        console.log("在");
         MapLoader().then(AMap => {
           new AMap.Map("container", {
             resizeEnable: true,
@@ -493,8 +492,6 @@ export default {
   //监听
   computed: {
     hotelFilter() {
-      console.log("有数据变化");
-
       this.getHotel(
         this.pricevalue,
         this.levelscheckList,
