@@ -11,11 +11,7 @@
         <div id="container"></div>
       </el-col>
       <el-col :span="12">
-        <el-tabs
-          v-model="activeName"
-          type="card"
-          @tab-click="handleClick(activeName)"
-        >
+        <el-tabs v-model="activeName" type="card" @tab-click="handleClick(activeName)">
           <el-tab-pane label="驾车" name="first"></el-tab-pane>
           <el-tab-pane label="公交" name="second"></el-tab-pane>
           <el-tab-pane label="步行" name="third"></el-tab-pane>
@@ -30,12 +26,7 @@
               <el-input placeholder="终点位置" v-model="end"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button
-                type="primary"
-                style="width: 100%"
-                @click="handleSearch"
-                >查询</el-button
-              >
+              <el-button type="primary" style="width: 100%" @click="handleSearch">查询</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -68,6 +59,8 @@ export default {
     AMap.plugin("AMap.CitySearch", () => {
       var citySearch = new AMap.CitySearch();
       citySearch.getLocalCity((status, result) => {
+        console.log(status);
+
         if (status === "complete" && result.info === "OK") {
           // 查询成功，result即为当前所在城市信息
           this.$message.success("你当前所在的城市是:" + result.city);

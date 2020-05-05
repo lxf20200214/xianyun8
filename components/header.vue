@@ -11,7 +11,7 @@
       <!-- 菜单栏 -->
       <el-row type="flex" class="navs">
         <nuxt-link to="/" :class="index===0?'active':''">首页</nuxt-link>
-        <nuxt-link to="/post" :class="index===1?'active':''">旅游攻略</nuxt-link>
+        <nuxt-link to="/post?start=0&limit=3" :class="index===1?'active':''">旅游攻略</nuxt-link>
         <nuxt-link to="/hotel" :class="index===2?'active':''">酒店</nuxt-link>
         <nuxt-link to="/air" :class="index===3?'active':''">国内机票</nuxt-link>
       </el-row>

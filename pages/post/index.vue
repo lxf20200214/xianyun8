@@ -82,11 +82,15 @@ export default {
       pageSize: 3,
       getList: {},
       flightsData: [],
-      list: ["广州", "上海", "北京"]
+      list: ["广州", "上海", "北京"],
+      total: 0
     };
   },
   mounted() {
-    this.listData();
+    if (this.$route.query) {
+      const { city, start, limit } = this.$route.query;
+      this.listData(city, start, limit);
+    }
   },
   methods: {
     handleSizeChange(val) {
@@ -114,19 +118,19 @@ export default {
       this.listData();
     },
     handleSearch1(item) {
-      // this.value = document.querySelector("#search").innerHTML;
       this.value = item;
       this.listData();
     },
     clicKcreate() {
       this.$router.push("post/create");
     },
-    listData() {
+    listData(city, start, limit) {
       const config = {
         url: "/posts",
         params: {
-          _start: this.pageIndex,
-          _limit: this.pageSize
+          _start: start,
+          _limit: limit,
+          city: city
         }
       };
       if (this.value) {
@@ -140,7 +144,7 @@ export default {
         const { data } = res.data;
         this.getList = data;
         this.flightsData = this.getList.slice(0, this.pageSize);
-        // this.total = res.data.total;
+        this.total = res.data.total;
       });
     }
   }
