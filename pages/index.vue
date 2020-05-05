@@ -2,11 +2,13 @@
   <div class="container">
     <el-carousel height="700px" style="min-width:1000px">
       <!-- 要循环的轮播图的每一项 -->
-      <el-carousel-item v-for="(item,index) in banners" :key="index">
+      <el-carousel-item v-for="(item, index) in banners" :key="index">
         <!-- 图片img标签不能实现居中对齐,可以使用背景图片 -->
         <div
-          :style="`background:url(${$axios.defaults.baseURL
-          +item.url}) center center no-repeat;height:700px`"
+          :style="
+            `background:url(${$axios.defaults.baseURL +
+              item.url}) center center no-repeat;height:700px`
+          "
         ></div>
       </el-carousel-item>
     </el-carousel>
@@ -19,19 +21,19 @@
           <!-- :class 动态的class，值等于一个对象，
           属性active就是类名，如果值是true就会加上该class，false就不加-->
           <span
-            v-for="(item,index) in options"
+            v-for="(item, index) in options"
             :key="index"
-            :class="{active:current===index}"
+            :class="{ active: current === index }"
             @click="handleTab(index)"
           >
-            <i>{{item.label}}</i>
+            <i>{{ item.label }}</i>
           </span>
         </el-row>
 
         <!-- 输入框 -->
         <el-row type="flex" align="middle" class="search-input">
-          <input :placeholder="options[current].value" />
-          <i class="el-icon-search"></i>
+          <input :placeholder="options[current].value" v-model="input" @keyup.enter="handleSearch" />
+          <i class="el-icon-search" @click="handleSearch"></i>
         </el-row>
       </div>
     </div>
@@ -51,7 +53,8 @@ export default {
         { label: "机票", value: "" }
       ],
       // 当前高亮的tab栏按钮的索引
-      current: 0
+      current: 0,
+      input: "" //输入框的值
     };
   },
   mounted() {
@@ -72,6 +75,16 @@ export default {
         this.$router.push("/air");
       }
       this.current = index;
+    },
+    handleSearch() {
+      console.log(this.input);
+      if (this.current === 0) {
+        this.$router.push("/post?city=" + this.input + "&start=0&limit=3");
+      }
+      // /hotel?city=
+      if (this.current === 1) {
+        this.$router.push("/hotel?city=" + this.input);
+      }
     }
   }
 };

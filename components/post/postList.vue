@@ -39,7 +39,7 @@ export default {
   },
   mounted() {
     this.data.images = this.data.images.slice(0, 3);
-    console.log(this.data.images);
+    // console.log(this.data.images);
   }
 };
 </script>

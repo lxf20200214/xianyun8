@@ -83,7 +83,10 @@ export default {
     };
   },
   mounted() {
-    this.listData();
+    if (this.$route.query) {
+      const { city, start, limit } = this.$route.query;
+      this.listData(city, start, limit);
+    }
   },
   methods: {
     handleSizeChange(val) {
@@ -111,19 +114,19 @@ export default {
       this.listData();
     },
     handleSearch1(item) {
-      // this.value = document.querySelector("#search").innerHTML;
       this.value = item;
       this.listData();
     },
     clicKcreate() {
       this.$router.push("post/create");
     },
-    listData() {
+    listData(city, start, limit) {
       const config = {
         url: "/posts",
         params: {
-          _start: this.pageIndex,
-          _limit: this.pageSize
+          _start: start,
+          _limit: limit,
+          city: city
         }
       };
       if (this.value) {
