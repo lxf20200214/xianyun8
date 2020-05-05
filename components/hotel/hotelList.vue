@@ -84,9 +84,6 @@ export default {
       page1: 5
     };
   },
-<<<<<<< HEAD
-  mounted() {},
-=======
 
   mounted() {
     this.$axios({
@@ -103,7 +100,6 @@ export default {
       this.list = data;
     });
   },
->>>>>>> 16645447dfd49ecb30e4d97965604439ac6488a8
   methods: {
     //条数数触发
     handleSizeChange(limit) {
