@@ -8,6 +8,7 @@
 
     <!-- 地图  -->
     <div id="box"></div>
+    <div id="box1"></div>
     <!-- 右侧列表 -->
     <div class="list">
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -100,6 +101,15 @@ export default {
     // 列表鼠标移入
     handleenter(v, i) {
       console.log(v, i);
+    //  this.map = new AMap.Map("box1", {
+    //     resizeEnable: true,
+    //     zoom: 15, //级别
+        
+    //     center: [
+    //       v.location.lng,
+    //        v.location.lat
+    //     ] //中心点坐标
+    //   });
     },
     load() {
       this.map = new AMap.Map("box", {
