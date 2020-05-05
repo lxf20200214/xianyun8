@@ -84,26 +84,7 @@ export default {
       page1: 5
     };
   },
-<<<<<<< HEAD
   mounted() {},
-=======
-
-  mounted() {
-    this.$axios({
-      url: "/hotels",
-      params: {
-        city: this.$store.state.hotel.setcitydata.id
-      }
-    }).then(res => {
-      // console.log(res);
-      const { data } = res.data;
-      // console.log(res);
-      // console.log(data);
-      this.total = res.data.total;
-      this.list = data;
-    });
-  },
->>>>>>> 16645447dfd49ecb30e4d97965604439ac6488a8
   methods: {
     //条数数触发
     handleSizeChange(limit) {
