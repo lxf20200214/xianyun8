@@ -31,7 +31,11 @@
         </el-tab-pane>
         <el-tab-pane label="交通" name="second">
           <div class="list_box">
-            <div class="content" v-for="(item,index) in traffic" :key="index">
+            <div class="content" v-for="(item,index) in traffic" :key="index" 
+             @mouseenter="handleenter(index)"
+               @mouseleave="handleLeave(index)"
+                ref="font1"
+                >
               <div class="site">{{item.name}}</div>
               <div
                 class="kilometre"
@@ -99,14 +103,15 @@ export default {
     // 点击切换tab栏
     handleClick(tab, event) {
       this.load();
-    
     },
     // 列表鼠标移入
     handleenter( i) {
       this.$refs.font[i].style.color="#2b89ec";
+     if ( this.$refs.font1) this.$refs.font1[i].style.color="#2b89ec";
     },
     handleLeave(i){
       this.$refs.font[i].style.color="";
+     if ( this.$refs.font1)  this.$refs.font1[i].style.color="";
     },
     load() {
       this.map = new AMap.Map("box", {
