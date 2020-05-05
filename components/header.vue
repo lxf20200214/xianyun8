@@ -62,6 +62,11 @@ export default {
       // 弹窗提示
       this.$message.success("退出成功");
     }
+  },
+  watch: {
+    $route() {
+      // console.log(this.$route);
+    }
   }
 };
 </script>

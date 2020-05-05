@@ -76,19 +76,17 @@ export default {
             }
           });
         });
+        return;
       },
       e => {
         console.log("地图加载失败", e);
       }
     );
+    this.getCities();
   },
   methods: {
     // 封装请求酒店列表的方法
     getCities(value) {
-      // 请求和value相关的城市
-      if (!value) {
-        return;
-      }
       return this.$axios({
         url: "/hotels",
         params: {
@@ -104,35 +102,37 @@ export default {
     },
     //页数酒店列表
     pagehotelist(value) {
-      console.log(value);
-
       this.hoteldatalist = value;
     },
     //城市
     chengshi(value) {
-      console.log(value);
+      console.log();
 
       if (!value) {
         return;
       }
-      this.$axios({
-        url: "/cities",
-        params: {
-          name: value
-        }
-      }).then(res => {
-        const { data } = res.data;
-        // 保存this.form数据到vuex中,供历史记录调用
-        this.$store.commit("hotel/setcitydata", data[0]);
-        this.getCities(data[0].id);
-        this.city = data[0].name;
-        this.$router.push({
-          path: "/hotel",
-          query: {
-            cityName: data[0].name
+      if (typeof value == "string") {
+        this.$axios({
+          url: "/cities",
+          params: {
+            name: value
           }
+        }).then(res => {
+          const { data } = res.data;
+          // 保存this.form数据到vuex中,供历史记录调用
+          this.$store.commit("hotel/setcitydata", data[0]);
+          this.getCities(data[0].id);
+          this.city = data[0].name;
+          this.$router.push({
+            path: "/hotel",
+            query: {
+              cityName: data[0].name
+            }
+          });
         });
-      });
+        return;
+      }
+      this.hoteldatalist = value;
     }
   }
 };

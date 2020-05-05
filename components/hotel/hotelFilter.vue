@@ -100,7 +100,7 @@
                   </li>
                 </ul>
               </div>
-              <div @click="switchshow" class="switchshow">
+              <div @click="switchshow" class="switchshow" v-if="$store.state.hotel.setcitydata">
                 <el-link>
                   <i class="el-icon-d-arrow-right"></i>等25个区域
                 </el-link>
@@ -302,7 +302,7 @@
         </div>
       </el-col>
     </el-row>
-    <!-- <div v-bind="hotelFilter"></div> -->
+    <div v-bind="hotelFilter"></div>
   </div>
 </template>
 <script>
@@ -331,13 +331,16 @@ export default {
       assetscheckList: [], //设施复选框
       brandscheckList: [], //品牌的列表
       count: 0, //滚动条的值
-      markerslist: [], //地图列表
       levels: {},
       inputtext: "" //人数输入框的值
     };
   },
+<<<<<<< HEAD
   mounted() {0
     // this.markersmap(this.$store.state.hotel.hoteldefaultlist);
+=======
+  mounted() {
+>>>>>>> 907a110c8ea2e566d2c7249022a3fae8f54d2faa
     this.$axios({
       url: "/hotels/options"
     }).then(res => {
@@ -385,6 +388,16 @@ export default {
     },
     //封装渲染的地图图标
     markersmap(data) {
+      if (data == "") {
+        MapLoader().then(AMap => {
+          new AMap.Map("container", {
+            resizeEnable: true,
+            zoom: 13 //级别
+            //中心点坐标
+          });
+        });
+        return;
+      }
       MapLoader()
         .then(AMap => {
           let map = new AMap.Map("container", {
@@ -421,14 +434,12 @@ export default {
             });
             return markers;
           });
-
           markers.forEach((marker, index) => {
             let pp = new AMap.Marker({
               map: this.map,
               content: marker.content,
               position: [marker.position[0], marker.position[1]],
-              title: marker.name,
-              text: "oo"
+              title: marker.name
               //级别
             });
             pp.on("mouseover", e => {
@@ -448,7 +459,7 @@ export default {
     //滑块的监听
     pricevalue1(value) {
       // console.log(value);
-      // console.log(this.pricevalue);
+      console.log(this.pricevalue);
     },
     //每间人数成人选择的监听
     chengren(value) {
@@ -462,14 +473,39 @@ export default {
     visiblepeople() {
       this.visible = false;
       this.inputtext = this.form.value2 + "  " + this.form.value3;
+    },
+    getHotel(
+      pricevalue,
+      levelscheckList,
+      typescheckList,
+      brandscheckList,
+      assetscheckList
+    ) {
+      return this.$axios({
+        url:
+          "/hotels" +
+          `?&city=${this.$store.state.hotel.setcitydata.id}&price_in=${pricevalue}&hotellevel=${levelscheckList}&hoteltype=${typescheckList}&hotelbrand=${brandscheckList}&hotelasset=${assetscheckList}`
+      }).then(res => {
+        const { data } = res.data;
+        this.$emit("chengshi", res.data);
+        this.$store.commit("hotel/setHotellist", data);
+        return res.data;
+      });
+      // });
     }
   },
   //监听
-  // computed: {
-  //   hotelFilter() {
-  //     return;
-  //   }
-  // },
+  computed: {
+    hotelFilter() {
+      this.getHotel(
+        this.pricevalue,
+        this.levelscheckList,
+        this.typescheckList,
+        this.brandscheckList,
+        this.assetscheckList
+      );
+    }
+  },
   //监听路由变化
   watch: {
     "$store.state.hotel.hotellist"() {

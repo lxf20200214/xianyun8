@@ -23,27 +23,30 @@
           href="#"
           id="search"
           @click="handleSearch1(item)"
-          v-for="(item,index) in list"
+          v-for="(item, index) in list"
           :key="index"
-        >{{item}}</a>
+          >{{ item }}</a
+        >
       </div>
       <div class="post-title">
         <h4>推荐攻略</h4>
-        <el-button type="primary" icon="el-icon-edit" @click="clicKcreate">写日记</el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="clicKcreate"
+          >写日记</el-button
+        >
       </div>
 
-      <div class="post-list" v-for="(item,index) in flightsData" :key="index">
+      <div class="post-list" v-for="(item, index) in flightsData" :key="index">
         <nuxt-link
           :to="{
-           path: `/post/qwe`,
-                  query: {
-                    id: item.id
-                  }
-        }"
+            path: `/post/detail`,
+            query: {
+              id: item.id
+            }
+          }"
         >
-          <postList :data="item" v-if="item.images.length >=3" />
+          <postList :data="item" v-if="item.images.length >= 3" />
 
-          <postList2 :data="item" v-if="item.images.length ===1" />
+          <postList2 :data="item" v-if="item.images.length === 1" />
         </nuxt-link>
       </div>
       <div class="el-row">
@@ -143,7 +146,7 @@ export default {
 };
 </script>
 
-<style  scoped lang="less">
+<style scoped lang="less">
 .w {
   padding: 20px 0;
   margin: 0 auto;

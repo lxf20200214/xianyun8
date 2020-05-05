@@ -3,10 +3,7 @@
     <div class="statement">
       <el-row type="flex" justify="space-between" class="statement-list">
         <el-col :span="8">
-          <i
-            class="iconfont iconweibiaoti-_huabanfuben"
-            style="color:#409EFF;"
-          ></i>
+          <i class="iconfont iconweibiaoti-_huabanfuben" style="color:#409EFF;"></i>
           <span>航协认证</span>
         </el-col>
         <el-col :span="8">
@@ -29,16 +26,9 @@
         :key="index"
         @click="handleClick(item)"
       >
-        <el-row
-          type="flex"
-          justify="space-between"
-          align="middle"
-          class="history-item"
-        >
+        <el-row type="flex" justify="space-between" align="middle" class="history-item">
           <div class="air-info">
-            <div class="to-from">
-              {{ item.departCity }} - {{ item.destCity }}
-            </div>
+            <div class="to-from">{{ item.departCity }} - {{ item.destCity }}</div>
             <p>{{ item.departDate }}</p>
           </div>
           <span>选择</span>

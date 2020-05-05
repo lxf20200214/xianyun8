@@ -200,6 +200,7 @@ export default {
 
     // 出发城市下拉选择时触发
     handleDepartSelect(item) {
+      console.log(item);
       this.form.departCode = item.sort;
     },
 
