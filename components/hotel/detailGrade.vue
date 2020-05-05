@@ -149,8 +149,8 @@ export default {
   }
   .grade_detail {
     position: absolute;
-    top: -75px;
-    right: -15px;
+    top: -77px;
+    right: -13px;
     color: #faca60;
     width: 50px !important;
     text-align: center;
