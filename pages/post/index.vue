@@ -25,14 +25,11 @@
           @click="handleSearch1(item)"
           v-for="(item, index) in list"
           :key="index"
-          >{{ item }}</a
-        >
+        >{{ item }}</a>
       </div>
       <div class="post-title">
         <h4>推荐攻略</h4>
-        <el-button type="primary" icon="el-icon-edit" @click="clicKcreate"
-          >写日记</el-button
-        >
+        <el-button type="primary" icon="el-icon-edit" @click="clicKcreate">写日记</el-button>
       </div>
 
       <div class="post-list" v-for="(item, index) in flightsData" :key="index">
@@ -69,6 +66,10 @@ import postList from "@/components/post/postList.vue";
 import postList2 from "@/components/post/postList2.vue";
 import postTab from "@/components/post/postTab.vue";
 export default {
+  // asyncData({ redirect }) {
+  //   redirect("/post?start=0&limit=3");
+  // },
+  // middleware: "authenticated",
   components: {
     postList,
     postList2,
