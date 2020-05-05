@@ -91,13 +91,16 @@ export default {
   },
   watch:{
       activeName(){
-      // this.window.reload()
+     
       this.load()
       }
   },
   methods: {
     // 点击切换tab栏
     handleClick(tab, event) {
+      this.load()
+     
+   
     },
     // 列表鼠标移入 
     handleenter(v, i) {
@@ -208,46 +211,21 @@ export default {
             // 存到data
             if (this.activeName==="first") {
             this.poisData = result.poiList.pois;
-              
-            }else{
             this.traffic = result.poiList.pois;
 
+              
             }
+            // else {
+              
+            // }
             // this.poisData = result.poiList.pois;
             this.distance = result.poiList.pois.map(item=>{
               return item.distance
             console.log(this.poisData);
 
             })
-          
-            
           });
         });
-        // AMap.service(["AMap.PlaceSearch"], () => {
-        //   //构造地点查询类
-        //   var placeSearch = new AMap.PlaceSearch({
-        //     // 兴趣点类别
-        //     type: "交通设施服务",
-        //     citylimit: true, //是否强制限制在设置的城市内搜索
-        //     map: this.map, // 展现结果的地图实例
-        //     panel: "panel", // 结果列表将在此容器中进行展示。
-        //     autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
-        //   });
-        //   var cpoint = [
-        //     this.content.location.longitude,
-        //     this.content.location.latitude
-        //   ]; //中心点坐标
-        //   placeSearch.searchNearBy("", cpoint, 10000, (status, result) => {
-        //     console.log(result);
-        //     this.traffic = result.poiList.pois;
-        //      this.distance = result.poiList.pois.map(item=>{
-        //       return item.distance
-        //     })
-        //     // console.log(this.traffic);
-            
-        //   });
-        // });
-
       // 给地图添加点标记
       this.map.add(this.markers);
     }

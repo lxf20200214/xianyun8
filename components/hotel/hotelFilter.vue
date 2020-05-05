@@ -335,12 +335,7 @@ export default {
       inputtext: "" //人数输入框的值
     };
   },
-<<<<<<< HEAD
-  mounted() {0
-    // this.markersmap(this.$store.state.hotel.hoteldefaultlist);
-=======
   mounted() {
->>>>>>> 907a110c8ea2e566d2c7249022a3fae8f54d2faa
     this.$axios({
       url: "/hotels/options"
     }).then(res => {

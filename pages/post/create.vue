@@ -55,11 +55,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-// import { VueEditor } from "vue2-editor";
-=======
 import PostDraft from "@/components/post/postDraft";
->>>>>>> 907a110c8ea2e566d2c7249022a3fae8f54d2faa
 export default {
   data() {
     return {
