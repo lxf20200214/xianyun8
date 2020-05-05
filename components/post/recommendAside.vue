@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="asidebox">
     <h4>相关攻略</h4>
     <router-link
       :to="'/post/detail?id='+ item.id"
@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.container {
+.asidebox {
   h4 {
     font-weight: 400;
     font-size: 18px;

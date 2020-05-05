@@ -7,7 +7,8 @@
     ></script>-->
 
     <!-- 地图  -->
-    <div id="box" ></div>
+    <div id="box"></div>
+    <div id="box1"></div>
     <!-- 右侧列表 -->
     <div class="list">
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -20,7 +21,9 @@
               @mouseenter="handleenter(item,index)"
             >
               <div class="site">{{item.name}}</div>
-              <div class="kilometre">{{ item.distance > 1000 ?  (Math.round(item.distance/100)/10).toFixed(1) + "公里" :item.distance +'米'}}</div>
+              <div
+                class="kilometre"
+              >{{ item.distance > 1000 ? (Math.round(item.distance/100)/10).toFixed(1) + "公里" :item.distance +'米'}}</div>
             </div>
           </div>
         </el-tab-pane>
@@ -28,7 +31,9 @@
           <div class="list_box">
             <div class="content" v-for="(item,index) in traffic" :key="index">
               <div class="site">{{item.name}}</div>
-              <div class="kilometre">{{ item.distance > 1000 ?  (Math.round(item.distance/100)/10).toFixed(1) + "公里" :item.distance +'米' }}</div>
+              <div
+                class="kilometre"
+              >{{ item.distance > 1000 ? (Math.round(item.distance/100)/10).toFixed(1) + "公里" :item.distance +'米' }}</div>
             </div>
           </div>
         </el-tab-pane>
@@ -56,23 +61,22 @@ export default {
       markers: [],
       map: "",
       render: "",
-      distance:[]
+      distance: []
     };
   },
   mounted() {
     setTimeout(() => {
       this.content = this.data[0];
       console.log(this.content);
-       console.log(this.distance);
-    
-        this.distance.forEach(item=>{
-           if(item < 1000)  {
-             console.log(item+"米")
-           }
-      else if( item > 1000){
-        console.log((Math.round(item/100)/10).toFixed(1) + "公里")
-      }
-        })
+      console.log(this.distance);
+
+      this.distance.forEach(item => {
+        if (item < 1000) {
+          console.log(item + "米");
+        } else if (item > 1000) {
+          console.log((Math.round(item / 100) / 10).toFixed(1) + "公里");
+        }
+      });
     }, 0);
 
     var url =
@@ -85,32 +89,36 @@ export default {
     window.onLoad = () => {
       // console.log(this);
 
-      this.load()
-     
+      this.load();
     };
   },
-  watch:{
-      activeName(){
-     
-      this.load()
-      }
-  },
+
   methods: {
     // 点击切换tab栏
     handleClick(tab, event) {
-      this.load()
-     
-   
+      this.load();
     },
-    // 列表鼠标移入 
+    // 列表鼠标移入
     handleenter(v, i) {
       console.log(v, i);
+    //  this.map = new AMap.Map("box1", {
+    //     resizeEnable: true,
+    //     zoom: 15, //级别
+        
+    //     center: [
+    //       v.location.lng,
+    //        v.location.lat
+    //     ] //中心点坐标
+    //   });
     },
-    load(){
+    load() {
       this.map = new AMap.Map("box", {
         resizeEnable: true,
         zoom: 15, //级别
-        center: [this.content.location.longitude, this.content.location.latitude] //中心点坐标
+        center: [
+          this.content.location.longitude,
+          this.content.location.latitude
+        ] //中心点坐标
       });
       // 创建 AMap.Icon 实例：
       var icon = new AMap.Icon({
@@ -133,8 +141,7 @@ export default {
             });
             return markers;
           });
-        } else if (this.activeName === "second") 
-         {
+        } else if (this.activeName === "second") {
           this.traffic.map((item, index) => {
             //  推到数组上
             markers.push({
@@ -178,12 +185,11 @@ export default {
 
         this.markers = markers;
         // console.log(this.markers);
-        
       }, 1000);
 
-          AMap.service(["AMap.PlaceSearch"], () => {
-            if (this.activeName==="first") {
-                   //构造地点查询类
+      AMap.service(["AMap.PlaceSearch"], () => {
+        if (this.activeName === "first") {
+          //构造地点查询类
           var placeSearch = new AMap.PlaceSearch({
             // 兴趣点类别
             type: "风景名胜",
@@ -192,8 +198,8 @@ export default {
             panel: "panel", // 结果列表将在此容器中进行展示。
             autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
           });
-            }else{
-                var placeSearch = new AMap.PlaceSearch({
+        } else {
+          var placeSearch = new AMap.PlaceSearch({
             // 兴趣点类别
             type: "交通设施服务",
             citylimit: true, //是否强制限制在设置的城市内搜索
@@ -201,31 +207,30 @@ export default {
             panel: "panel", // 结果列表将在此容器中进行展示。
             autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
           });
-            }
-          var cpoint = [
-            this.content.location.longitude,
-            this.content.location.latitude
-          ]; //中心点坐标
-          placeSearch.searchNearBy("", cpoint, 20000, (status, result) => {
-            // console.log(result);
-            // 存到data
-            if (this.activeName==="first") {
+        }
+        var cpoint = [
+          this.content.location.longitude,
+          this.content.location.latitude
+        ]; //中心点坐标
+        placeSearch.searchNearBy("", cpoint, 20000, (status, result) => {
+          // console.log(result);
+          // 存到data
+          if (this.activeName === "first") {
             this.poisData = result.poiList.pois;
+
             this.traffic = result.poiList.pois;
+            console.log(this.traffic);
+          }
+          // else {
 
-              
-            }
-            // else {
-              
-            // }
-            // this.poisData = result.poiList.pois;
-            this.distance = result.poiList.pois.map(item=>{
-              return item.distance
+          // }
+          // this.poisData = result.poiList.pois;
+          this.distance = result.poiList.pois.map(item => {
+            return item.distance;
             console.log(this.poisData);
-
-            })
           });
         });
+      });
       // 给地图添加点标记
       this.map.add(this.markers);
     }

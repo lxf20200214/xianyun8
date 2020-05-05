@@ -14,8 +14,7 @@
             :disable-transitions="false"
             @close="handleClose(tagName)"
             v-if="tagName"
-            >回复@{{ tagName }}</el-tag
-          >
+          >回复@{{ tagName }}</el-tag>
           <div class="edit">
             <el-input
               type="textarea"
@@ -49,20 +48,14 @@
                 <img width="100%" :src="dialogImageUrl" alt />
               </el-dialog>
               <div>
-                <el-button size="mini" type="primary" @click="handleSubmit"
-                  >提交</el-button
-                >
+                <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
               </div>
             </el-row>
           </div>
         </div>
 
         <div class="cmt-list">
-          <div
-            class="cmt-item"
-            v-for="(item, index) in commentData"
-            :key="index"
-          >
+          <div class="cmt-item" v-for="(item, index) in commentData" :key="index">
             <PostComment :data="item" @getReply="getReply" />
           </div>
         </div>
@@ -238,7 +231,7 @@ export default {
       this.id = item.id;
       document.querySelector("h4").scrollIntoView();
       // console.log(document.documentElement.scrollTop);
-      window.scrollTo(0, document.documentElement.scrollTop + 24);
+      window.scrollTo(0, document.documentElement.scrollTop + 32);
     }
   },
   components: {

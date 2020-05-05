@@ -6,8 +6,8 @@
       v-for="(v,index) in $store.state.hotel.hotelDetail"
       :key="index"
     >
-      <el-breadcrumb-item to="/hotel/index">酒店</el-breadcrumb-item>
-      <el-breadcrumb-item to="/hotel/index">广州酒店</el-breadcrumb-item>
+      <el-breadcrumb-item to="/hotel">酒店</el-breadcrumb-item>
+      <el-breadcrumb-item to="/hotel">广州酒店</el-breadcrumb-item>
       <el-breadcrumb-item>{{v.name}}</el-breadcrumb-item>
     </el-breadcrumb>
 

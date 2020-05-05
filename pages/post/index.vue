@@ -66,6 +66,10 @@ import postList from "@/components/post/postList.vue";
 import postList2 from "@/components/post/postList2.vue";
 import postTab from "@/components/post/postTab.vue";
 export default {
+  // asyncData({ redirect }) {
+  //   redirect("/post?start=0&limit=3");
+  // },
+  // middleware: "authenticated",
   components: {
     postList,
     postList2,
