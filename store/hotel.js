@@ -5,7 +5,7 @@ export const state = () => {
     },
     hotellist: [],
     hoteldefaultlist: [],
-    hotelDetail:[]
+    hotelDetail:[],
   
   };
 };
@@ -24,5 +24,6 @@ export const mutations = {
   },
   setHoteleDetail(state, data) {
     state.hotelDetail = data;
-  }
+  },
+  
 };

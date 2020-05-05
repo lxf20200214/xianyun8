@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <!-- 面包屑 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right" v-for="(v,index) in list" :key="index">
+    <el-breadcrumb separator-class="el-icon-arrow-right" v-for="(v,index) in $store.state.hotel.hotelDetail" :key="index">
       <el-breadcrumb-item to="/hotel/index">酒店</el-breadcrumb-item>
       <el-breadcrumb-item to="/hotel/index">广州酒店</el-breadcrumb-item>
       <el-breadcrumb-item>{{v.name}}</el-breadcrumb-item>
     </el-breadcrumb>
 
     <!-- 头部 -->
-    <div class="header" v-for="(item,index) in list" :key="index+1">
+    <div class="header" v-for="(item,index) in $store.state.hotel.hotelDetail" :key="index+1">
       <h2 class="title">
        {{item.name}}
         <!--  -->
@@ -36,14 +36,14 @@
       </div>
     </div>
         <!-- 其他推荐 -->
-    <DetailContent :data="item.products" v-for="(item,index) in list" :key="index+2"/>
+    <DetailContent :data="item.products" v-for="(item,index) in $store.state.hotel.hotelDetail" :key="index+2"/>
     <!-- 地图  -->
     <DetailMap   :data="$store.state.hotel.hotelDetail"  />
     <!-- 基本信息 -->
     <DetaiInformation  :data="$store.state.hotel.hotelDetail"/>
 
     <!-- 评分 -->
-    <DetailGrade :data="item" v-for="(item,index) in list " :key="index+5" />
+    <DetailGrade :data="item" v-for="(item,index) in $store.state.hotel.hotelDetail " :key="index+5" />
   </div>
 </template>
 
@@ -103,7 +103,7 @@ export default {
     }).then(res=>{
       // 解构数据
       const { data } = res.data
-      console.log(data);
+      // console.log(data);
       // 赋值到data进行渲染
         this.list = data 
         // console.log(this.list[0].scores);

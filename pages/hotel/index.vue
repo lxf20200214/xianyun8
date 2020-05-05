@@ -14,7 +14,7 @@
       <el-row class="breadcrumb">
         <el-col :span="24">
           <div class="grid-content bg-purple-dark">
-            <HotelFilter />
+            <HotelFilter @chengshi="chengshi" />
           </div>
         </el-col>
       </el-row>
@@ -29,9 +29,10 @@
   </div>
 </template>
 <script>
-// import AMapLoader from "@amap/amap-jsapi-loader";
+import MapLoader from "@/plugins/amap.js";
 import HotelFilter from "../../components/hotel/hotelFilter";
 import hotelList from "@/components/hotel/hotelList.vue";
+
 export default {
   components: {
     HotelFilter,
@@ -44,12 +45,8 @@ export default {
     };
   },
   mounted() {
-    AMapLoader.load({
-      key: "4e7b717582fe951d6aeb7920826f06e0", //首次调用load必须填写key
-      version: "2.0", //JSAPI 版本号
-      plugins: ["AMap.CitySearch", "AMap.Scale"] //同步加载的插件列表
-    })
-      .then(AMap => {
+    MapLoader().then(
+      AMap => {
         AMap.plugin("AMap.CitySearch", () => {
           let citySearch = new AMap.CitySearch();
           citySearch.getLocalCity((status, result) => {
@@ -79,17 +76,11 @@ export default {
             }
           });
         });
-        //  let map = new AMap.Map("container", {
-        //   resizeEnable: true,
-        //   zoom: 8 //级别
-        // });
-        // this.map = map;
-        // map.clearMap(); // 清除地图覆盖物
-        // map.addControl(new AMap.Scale());
-      })
-      .catch(e => {
-        console.error(e); //加载错误提示
-      });
+      },
+      e => {
+        console.log("地图加载失败", e);
+      }
+    );
   },
   methods: {
     // 封装请求酒店列表的方法
@@ -105,7 +96,7 @@ export default {
         }
       }).then(res => {
         const { data } = res;
-        this.$store.commit("hotel/setHotelefaul11", res.data.data);
+        this.$store.commit("hotel/setHotellist", res.data.data);
         this.hoteldatalist = data;
         return res.config.params;
       });
@@ -119,6 +110,8 @@ export default {
     },
     //城市
     chengshi(value) {
+      console.log(value);
+
       if (!value) {
         return;
       }

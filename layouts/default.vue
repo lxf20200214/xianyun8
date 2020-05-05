@@ -68,9 +68,9 @@ a {
   text-decoration: none;
   color: inherit;
 }
-a:hover {
+/* a:hover {
   color: orange;
-}
+} */
 em,
 i {
   font-style: normal;

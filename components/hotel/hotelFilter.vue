@@ -27,11 +27,7 @@
               </div>
             </el-form-item>
             <el-form-item>
-              <el-popover
-                width="300"
-                placement="bottom-start"
-                v-model="visible"
-              >
+              <el-popover width="300" placement="bottom-start" v-model="visible">
                 <el-row class="grid-content-left">
                   <el-col :span="8">
                     <div class="grid-content bg-purple">每间</div>
@@ -44,12 +40,7 @@
                         size="small"
                         @change="chengren"
                       >
-                        <el-option
-                          v-for="item in 10"
-                          :key="item"
-                          :label="item"
-                          :value="item"
-                        ></el-option>
+                        <el-option v-for="item in 10" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
                   </el-col>
@@ -62,21 +53,14 @@
                         style="margin-left: 10px;"
                         @change="ertong"
                       >
-                        <el-option
-                          v-for="item in 10"
-                          :key="item"
-                          :label="item"
-                          :value="item"
-                        ></el-option>
+                        <el-option v-for="item in 10" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
                   </el-col>
                 </el-row>
                 <el-row class="primary">
                   <div style="text-align: right; padding-top: 15px ">
-                    <el-button type="primary" size="mini" @click="visiblepeople"
-                      >确定</el-button
-                    >
+                    <el-button type="primary" size="mini" @click="visiblepeople">确定</el-button>
                   </div>
                 </el-row>
                 <!-- readonly是否只读 -->
@@ -126,10 +110,7 @@
           <el-col :span="24">
             <el-col :span="3">
               <el-badge value="?" class="item" type="primary">
-                <el-tooltip
-                  content="等级均价由平日价格计算得出，节假日价格会有上浮。"
-                  placement="top"
-                >
+                <el-tooltip content="等级均价由平日价格计算得出，节假日价格会有上浮。" placement="top">
                   <span size="small">均价</span>
                 </el-tooltip>
               </el-badge>
@@ -137,10 +118,7 @@
             <el-col :span="21">
               <div class="grid-content bg-purple grid-content-bottom">
                 <el-col :span="7">
-                  <el-tooltip
-                    content="等级均价由平日价格计算得出，节假日价格会有上浮。"
-                    placement="bottom-start"
-                  >
+                  <el-tooltip content="等级均价由平日价格计算得出，节假日价格会有上浮。" placement="bottom-start">
                     <el-rate
                       show-score
                       v-model="value"
@@ -151,10 +129,7 @@
                   </el-tooltip>
                 </el-col>
                 <el-col :span="7">
-                  <el-tooltip
-                    content="等级均价由平日价格计算得出，节假日价格会有上浮。"
-                    placement="bottom-start"
-                  >
+                  <el-tooltip content="等级均价由平日价格计算得出，节假日价格会有上浮。" placement="bottom-start">
                     <el-rate
                       show-score
                       v-model="value"
@@ -165,10 +140,7 @@
                   </el-tooltip>
                 </el-col>
                 <el-col :span="7">
-                  <el-tooltip
-                    content="等级均价由平日价格计算得出，节假日价格会有上浮。"
-                    placement="bottom-start"
-                  >
+                  <el-tooltip content="等级均价由平日价格计算得出，节假日价格会有上浮。" placement="bottom-start">
                     <el-rate
                       show-score
                       v-model="value"
@@ -206,11 +178,7 @@
               <span class="demonstration">价格</span>
               <span>0-{{ pricevalue }}</span>
             </div>
-            <el-slider
-              v-model="pricevalue"
-              :max="4000"
-              @change="pricevalue1"
-            ></el-slider>
+            <el-slider v-model="pricevalue" :max="4000" @change="pricevalue1"></el-slider>
           </div>
         </div>
       </el-col>
@@ -221,22 +189,17 @@
             <el-dropdown placement="bottom-start">
               <span class="el-dropdown-link">
                 {{
-                  levelscheckList.length > 1
-                    ? "已选" + levelscheckList.length + "项"
-                    : levelscheckList[0] || "不限"
+                levelscheckList.length > 1
+                ? "已选" + levelscheckList.length + "项"
+                : levelscheckList[0] || "不限"
                 }}
-                <i class="el-icon-arrow-down el-icon--right"></i>
+                <i
+                  class="el-icon-arrow-down el-icon--right"
+                ></i>
               </span>
               <el-dropdown-menu slot="dropdown" placement="bottom-start">
-                <el-dropdown-item
-                  v-for="item in levels.levels"
-                  :key="item.levels"
-                >
-                  <el-checkbox
-                    :label="item.name"
-                    @change="dropdownitem"
-                    v-model="levelscheckList"
-                  ></el-checkbox>
+                <el-dropdown-item v-for="item in levels.levels" :key="item.levels">
+                  <el-checkbox :label="item.name" @change="dropdownitem" v-model="levelscheckList"></el-checkbox>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -251,22 +214,17 @@
               <el-dropdown placement="bottom-start">
                 <span class="el-dropdown-link">
                   {{
-                    typescheckList.length > 1
-                      ? "已选" + typescheckList.length + "项"
-                      : typescheckList[0] || "不限"
+                  typescheckList.length > 1
+                  ? "已选" + typescheckList.length + "项"
+                  : typescheckList[0] || "不限"
                   }}
-                  <i class="el-icon-arrow-down el-icon--right"></i>
+                  <i
+                    class="el-icon-arrow-down el-icon--right"
+                  ></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item
-                    v-for="item in levels.types"
-                    :key="item.levels"
-                  >
-                    <el-checkbox
-                      :label="item.name"
-                      @change="dropdownitem"
-                      v-model="typescheckList"
-                    ></el-checkbox>
+                  <el-dropdown-item v-for="item in levels.types" :key="item.levels">
+                    <el-checkbox :label="item.name" @change="dropdownitem" v-model="typescheckList"></el-checkbox>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -282,17 +240,16 @@
               <el-dropdown placement="bottom-start">
                 <span class="el-dropdown-link">
                   {{
-                    assetscheckList.length > 1
-                      ? "已选" + assetscheckList.length + "项"
-                      : assetscheckList[0] || "不限"
+                  assetscheckList.length > 1
+                  ? "已选" + assetscheckList.length + "项"
+                  : assetscheckList[0] || "不限"
                   }}
-                  <i class="el-icon-arrow-down el-icon--right"></i>
+                  <i
+                    class="el-icon-arrow-down el-icon--right"
+                  ></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item
-                    v-for="item in levels.assets"
-                    :key="item.levels"
-                  >
+                  <el-dropdown-item v-for="item in levels.assets" :key="item.levels">
                     <el-checkbox
                       :label="item.name"
                       @change="dropdownitem"
@@ -313,11 +270,13 @@
               <el-dropdown placement="bottom-start">
                 <span class="el-dropdown-link">
                   {{
-                    brandscheckList.length > 1
-                      ? "已选" + brandscheckList.length + "项"
-                      : brandscheckList[0] || "不限"
+                  brandscheckList.length > 1
+                  ? "已选" + brandscheckList.length + "项"
+                  : brandscheckList[0] || "不限"
                   }}
-                  <i class="el-icon-arrow-down el-icon--right"></i>
+                  <i
+                    class="el-icon-arrow-down el-icon--right"
+                  ></i>
                 </span>
                 <el-dropdown-menu
                   slot="dropdown"
@@ -347,7 +306,7 @@
   </div>
 </template>
 <script>
-// import AMapLoader from "@amap/amap-jsapi-loader";
+import MapLoader from "@/plugins/amap.js";
 export default {
   data() {
     return {
@@ -377,7 +336,8 @@ export default {
       inputtext: "" //人数输入框的值
     };
   },
-  mounted() {
+  mounted() {0
+    // this.markersmap(this.$store.state.hotel.hoteldefaultlist);
     this.$axios({
       url: "/hotels/options"
     }).then(res => {
@@ -393,7 +353,7 @@ export default {
     },
     //查看价格
     onSubmit() {
-      this.$emit("myclick", this.form.hotelcity);
+      this.$emit("chengshi", this.form.hotelcity);
     },
     //多选框绑定值发生变化时
     dropdownitem(value) {},
@@ -401,48 +361,51 @@ export default {
     handleSelect() {},
     //返回输入建议的方法
     querySearch(queryString, cb) {
+      console.log(queryString);
+
       if (!queryString) {
         // 如果输入框的值是空的话把之前的城市列表删除掉
         return;
       }
       this.$axios({
-        url: "/hotels",
+        url: "/cities",
         params: {
-          name_contains: queryString
+          name: queryString
         }
       }).then(res => {
         const { data } = res.data;
-        console.log(res);
+        console.log(data);
 
-        cb(data);
-        // 保存this.form数据到vuex中,供历史记录调用
+        cb([
+          {
+            value: data[0].name
+          }
+        ]);
       });
-      // this.$emit("myclick");
-      // this.getCities(queryString).then(value => {
-      //   let value1 = [];
-      //   value1.push({
-      //     value: value.city
-      //   });
-      //
-      // });
-      // console.log();
-
-      // cb([
-      //   {
-      //     value: this.form.hotelcity
-      //   }
-      // ]);
     },
     //封装渲染的地图图标
     markersmap(data) {
-      var infoWindow = new AMap.InfoWindow({});
-      this.maploading = false;
-      let markers = [];
-      data.map((item, index) => {
-        // console.log(index + 1, item.name, item.location.latitude);
-        markers.push({
-          name: item.name,
-          content: `<div class="marker-route marker-marker-bus-from ">
+      MapLoader()
+        .then(AMap => {
+          let map = new AMap.Map("container", {
+            resizeEnable: true,
+            zoom: 13, //级别
+            center: [
+              this.$store.state.hotel.hotellist[0].location.longitude,
+              this.$store.state.hotel.hotellist[0].location.latitude
+            ] //中心点坐标
+          });
+          map.clearMap(); // 清除地图覆盖
+          this.map = map;
+          var infoWindow = new AMap.InfoWindow({
+            offset: new AMap.Pixel(10, -3)
+          });
+          this.maploading = false;
+          let markers = [];
+          data.map((item, index) => {
+            markers.push({
+              name: item.name,
+              content: `<div class="marker-route marker-marker-bus-from ">
             <span class="markericon "
             v-on:mouseover='ourr'
             style='background-image: url("https://webapi.amap.com/theme/v1.3/markers/b/mark_b.png");
@@ -454,28 +417,32 @@ export default {
              line-height: 24px;
              color: #fff;
             '>${index + 1}</span></div>`,
-          position: [item.location.longitude, item.location.latitude]
-        });
-        return markers;
-      });
+              position: [item.location.longitude, item.location.latitude]
+            });
+            return markers;
+          });
 
-      markers.forEach((marker, index) => {
-        let pp = new AMap.Marker({
-          map: this.map,
-          content: marker.content,
-          position: [marker.position[0], marker.position[1]],
-          title: marker.name,
-          text: "oo"
-          //级别
+          markers.forEach((marker, index) => {
+            let pp = new AMap.Marker({
+              map: this.map,
+              content: marker.content,
+              position: [marker.position[0], marker.position[1]],
+              title: marker.name,
+              text: "oo"
+              //级别
+            });
+            pp.on("mouseover", e => {
+              infoWindow.setContent(marker.name);
+              infoWindow.open(this.map, e.target.getPosition());
+            });
+            pp.on("mouseout", e => {
+              this.map.clearInfoWindow();
+            });
+          });
+        })
+        .catch(e => {
+          console.error(e); //加载错误提示
         });
-        pp.on("mouseover", e => {
-          infoWindow.setContent(marker.name);
-          infoWindow.open(this.map, e.target.getPosition());
-        });
-        pp.on("mouseout", e => {
-          this.map.clearInfoWindow();
-        });
-      });
     },
 
     //滑块的监听
@@ -505,51 +472,8 @@ export default {
   // },
   //监听路由变化
   watch: {
-    $route() {
-      console.log(this.$route.query.page);
-      console.log("我变化了");
-
-      if (this.$route.query.page != undefined) {
-        AMapLoader.load({
-          key: "4e7b717582fe951d6aeb7920826f06e0", //首次调用load必须填写key
-          version: "2.0", //JSAPI 版本号
-          plugins: ["AMap.CitySearch", "AMap.Scale"] //同步加载的插件列表
-        })
-          .then(AMap => {
-            let map = new AMap.Map("container", {
-              resizeEnable: true,
-              zoom: 13 //级别
-            });
-            map.clearMap(); // 清除地图覆盖
-            this.map = map;
-            let data = [];
-            setTimeout(async () => {
-              data = [...this.$store.state.hotel.hotellist];
-              await this.markersmap(data);
-            }, 10);
-          })
-          .catch(e => {
-            console.error(e); //加载错误提示
-          });
-      } else {
-        AMapLoader.load({
-          key: "4e7b717582fe951d6aeb7920826f06e0", //首次调用load必须填写key
-          version: "2.0", //JSAPI 版本号
-          plugins: ["AMap.CitySearch", "AMap.Scale"] //同步加载的插件列表
-        })
-          .then(AMap => {
-            let map = new AMap.Map("container", {
-              resizeEnable: true,
-              zoom: 13 //级别
-            });
-            map.clearMap(); // 清除地图覆盖
-            this.map = map;
-            this.markersmap(this.$store.state.hotel.hoteldefaultlist);
-          })
-          .catch(e => {
-            console.error(e); //加载错误提示
-          });
-      }
+    "$store.state.hotel.hotellist"() {
+      this.markersmap(this.$store.state.hotel.hotellist);
     }
   }
 };

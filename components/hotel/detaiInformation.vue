@@ -17,7 +17,7 @@
           <span>主要设施</span>
         </el-col>
         <el-col :span="20" type="felx" class="basic_data">
-          <i class="square" v-for="(v,index) in item.hotelassets " :key="index">{{v.name?v.name:value}}</i>
+          <i class="square" v-for="(v,index) in item.hotelassets " :key="index">{{v.name ? v.name:value}}</i>
         </el-col>
       </el-row>
       <el-row class="basic_information">
@@ -25,7 +25,7 @@
           <span>停车服务</span>
         </el-col>
         <el-col :span="20" type="felx" class="basic_data">
-          <span> {{item.parking?item.parking:content }}</span>
+          <span> {{item.parking ? item.parking:content }}</span>
         </el-col>
       </el-row>
       <el-row class="basic_information">
@@ -86,7 +86,7 @@ export default {
       // width: 74px;
       padding: 0 10px;
       height: 30px;
-      margin: 15px 20px;
+      margin: 15px 10px;
       background-color: #eeeeee;
       border-radius: 5px;
       text-align: center;
