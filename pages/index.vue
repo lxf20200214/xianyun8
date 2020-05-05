@@ -32,7 +32,11 @@
 
         <!-- 输入框 -->
         <el-row type="flex" align="middle" class="search-input">
-          <input :placeholder="options[current].value" v-model="input" />
+          <input
+            :placeholder="options[current].value"
+            v-model="input"
+            @keyup.enter="handleSearch"
+          />
           <i class="el-icon-search" @click="handleSearch"></i>
         </el-row>
       </div>

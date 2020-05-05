@@ -38,9 +38,7 @@
           </el-form-item>
         </el-form>
         <div class="create-button">
-          <el-button type="primary" @click="onSubmit" size="small"
-            >发布</el-button
-          >
+          <el-button type="primary" @click="onSubmit" size="small">发布</el-button>
           <span class="submit-side">
             <span>或者</span>
             <a href="javascript:;" @click="handleSave">保存到草稿</a>
@@ -56,6 +54,7 @@
 
 <script>
 import PostDraft from "@/components/post/postDraft";
+import moment from "moment";
 export default {
   data() {
     return {
@@ -64,7 +63,8 @@ export default {
         city: "",
         content: ""
       },
-      cities: []
+      cities: [],
+      moment
     };
   },
   components: {
@@ -196,8 +196,11 @@ export default {
     // 保存到store草稿箱
     handleSave() {
       let data = { ...this.form };
+      data.time = this.moment().format("YYYY-MM-DD");
+      // console.log(data.time);
+
       this.$store.commit("post/setSaveData", data);
-      console.log(this.$store.state.post.saveData);
+      // console.log(this.$store.state.post.saveData);
     },
     // 获取草稿数据,替换
     getDraft(data) {
