@@ -42,7 +42,8 @@ export default {
     // 新增本地持久化的插件
     { src: "~/plugins/localStorage.js", ssr: false },
     // 拦截axios错误插件
-    "@/plugins/axios"
+    "@/plugins/axios",
+    { src: "~/plugins/vue2-editor", ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

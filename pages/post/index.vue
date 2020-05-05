@@ -25,14 +25,11 @@
           @click="handleSearch1(item)"
           v-for="(item, index) in list"
           :key="index"
-          >{{ item }}</a
-        >
+        >{{ item }}</a>
       </div>
       <div class="post-title">
         <h4>推荐攻略</h4>
-        <el-button type="primary" icon="el-icon-edit" @click="clicKcreate"
-          >写日记</el-button
-        >
+        <el-button type="primary" icon="el-icon-edit" @click="clicKcreate">写日记</el-button>
       </div>
 
       <div class="post-list" v-for="(item, index) in flightsData" :key="index">
@@ -81,7 +78,8 @@ export default {
       pageSize: 3,
       getList: {},
       flightsData: [],
-      list: ["广州", "上海", "北京"]
+      list: ["广州", "上海", "北京"],
+      total: 0
     };
   },
   mounted() {
@@ -139,7 +137,7 @@ export default {
         const { data } = res.data;
         this.getList = data;
         this.flightsData = this.getList.slice(0, this.pageSize);
-        // this.total = res.data.total;
+        this.total = res.data.total;
       });
     }
   }
