@@ -14,8 +14,7 @@
             :disable-transitions="false"
             @close="handleClose(tagName)"
             v-if="tagName"
-            >回复@{{ tagName }}</el-tag
-          >
+          >回复@{{ tagName }}</el-tag>
           <div class="edit">
             <el-input
               type="textarea"
@@ -49,37 +48,33 @@
                 <img width="100%" :src="dialogImageUrl" alt />
               </el-dialog>
               <div>
-                <el-button size="mini" type="primary" @click="handleSubmit"
-                  >提交</el-button
-                >
+                <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
               </div>
             </el-row>
           </div>
         </div>
-
-        <div class="cmt-list">
-          <div
-            class="cmt-item"
-            v-for="(item, index) in commentData"
-            :key="index"
-          >
-            <PostComment :data="item" @getReply="getReply" />
+        <div v-if="commentData.length">
+          <div class="cmt-list">
+            <div class="cmt-item" v-for="(item, index) in commentData" :key="index">
+              <PostComment :data="item" @getReply="getReply" />
+            </div>
           </div>
+          <!-- size-change:切换条数时候触发的事件 -->
+          <!-- current-change:切换页数时候触发的事件 -->
+          <!-- current-page:当前的页数 -->
+          <!-- page-size:当前的条数 -->
+          <!-- total:总条数 -->
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pageIndex"
+            :page-sizes="[2, 4, 6, 8]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          ></el-pagination>
         </div>
-        <!-- size-change:切换条数时候触发的事件 -->
-        <!-- current-change:切换页数时候触发的事件 -->
-        <!-- current-page:当前的页数 -->
-        <!-- page-size:当前的条数 -->
-        <!-- total:总条数 -->
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="pageIndex"
-          :page-sizes="[2, 4, 6, 8]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
+        <div v-if="!commentData.length" class="cmt-empty">暂无评论,赶紧抢占沙发</div>
       </div>
       <div class="right">
         <!-- 侧边推荐栏 -->
@@ -238,7 +233,7 @@ export default {
       this.id = item.id;
       document.querySelector("h4").scrollIntoView();
       // console.log(document.documentElement.scrollTop);
-      window.scrollTo(0, document.documentElement.scrollTop + 24);
+      // window.scrollTo(0, document.documentElement.scrollTop + 32);
     }
   },
   components: {
@@ -303,5 +298,12 @@ export default {
   .cmt-item:last-child {
     border: none;
   }
+}
+.cmt-empty {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+  padding: 30px 0;
+  border: 1px dashed #ddd;
 }
 </style>

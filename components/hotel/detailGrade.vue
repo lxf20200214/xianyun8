@@ -1,6 +1,6 @@
 <template>
   <div class="grade">
-    <h3>0条真实用户评论</h3>
+    <h3>829条真实用户评论</h3>
     <el-row>
       <el-col :span="4" type="felx" class="grade_data">
         <p>总评数: 829</p>
@@ -149,8 +149,8 @@ export default {
   }
   .grade_detail {
     position: absolute;
-    top: -75px;
-    right: -15px;
+    top: -77px;
+    right: -13px;
     color: #faca60;
     width: 50px !important;
     text-align: center;

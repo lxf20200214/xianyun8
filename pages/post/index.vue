@@ -25,14 +25,11 @@
           @click="handleSearch1(item)"
           v-for="(item, index) in list"
           :key="index"
-          >{{ item }}</a
-        >
+        >{{ item }}</a>
       </div>
       <div class="post-title">
         <h4>推荐攻略</h4>
-        <el-button type="primary" icon="el-icon-edit" @click="clicKcreate"
-          >写日记</el-button
-        >
+        <el-button type="primary" icon="el-icon-edit" @click="clicKcreate">写日记</el-button>
       </div>
 
       <div class="post-list" v-for="(item, index) in flightsData" :key="index">
@@ -69,6 +66,10 @@ import postList from "@/components/post/postList.vue";
 import postList2 from "@/components/post/postList2.vue";
 import postTab from "@/components/post/postTab.vue";
 export default {
+  // asyncData({ redirect }) {
+  //   redirect("/post?start=0&limit=3");
+  // },
+  // middleware: "authenticated",
   components: {
     postList,
     postList2,
@@ -81,11 +82,15 @@ export default {
       pageSize: 3,
       getList: {},
       flightsData: [],
-      list: ["广州", "上海", "北京"]
+      list: ["广州", "上海", "北京"],
+      total: 0
     };
   },
   mounted() {
-    this.listData();
+    if (this.$route.query) {
+      const { city, start, limit } = this.$route.query;
+      this.listData(city, start, limit);
+    }
   },
   methods: {
     handleSizeChange(val) {
@@ -113,19 +118,19 @@ export default {
       this.listData();
     },
     handleSearch1(item) {
-      // this.value = document.querySelector("#search").innerHTML;
       this.value = item;
       this.listData();
     },
     clicKcreate() {
       this.$router.push("post/create");
     },
-    listData() {
+    listData(city, start, limit) {
       const config = {
         url: "/posts",
         params: {
-          _start: this.pageIndex,
-          _limit: this.pageSize
+          _start: start,
+          _limit: limit,
+          city: city
         }
       };
       if (this.value) {
@@ -139,7 +144,7 @@ export default {
         const { data } = res.data;
         this.getList = data;
         this.flightsData = this.getList.slice(0, this.pageSize);
-        // this.total = res.data.total;
+        this.total = res.data.total;
       });
     }
   }

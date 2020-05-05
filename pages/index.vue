@@ -32,7 +32,7 @@
 
         <!-- 输入框 -->
         <el-row type="flex" align="middle" class="search-input">
-          <input :placeholder="options[current].value" v-model="input" />
+          <input :placeholder="options[current].value" v-model="input" @keyup.enter="handleSearch" />
           <i class="el-icon-search" @click="handleSearch"></i>
         </el-row>
       </div>
@@ -77,6 +77,7 @@ export default {
       this.current = index;
     },
     handleSearch() {
+      console.log(this.input);
       if (this.current === 0) {
         this.$router.push("/post?city=" + this.input + "&start=0&limit=3");
       }

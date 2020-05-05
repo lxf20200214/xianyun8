@@ -33,7 +33,7 @@ export default {
     this.$axios({
       url: "/posts/cities"
     }).then(res => {
-      console.log(res);
+      // console.log(res);
 
       const { data } = res.data;
       this.list = data;
@@ -44,12 +44,12 @@ export default {
     handleEnter(index) {
       // 记录当前的索引
       this.current = index;
-      console.log(index);
+      // console.log(index);
     },
     // 鼠标离开时候触发的事件
     handleLeave() {
       this.current = false;
-      console.log(this.current);
+      // console.log(this.current);
     }
   }
 };

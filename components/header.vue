@@ -10,10 +10,10 @@
 
       <!-- 菜单栏 -->
       <el-row type="flex" class="navs">
-        <nuxt-link to="/">首页</nuxt-link>
-        <nuxt-link to="/post">旅游攻略</nuxt-link>
-        <nuxt-link to="/hotel">酒店</nuxt-link>
-        <nuxt-link to="/air">国内机票</nuxt-link>
+        <nuxt-link to="/" :class="index===0?'active':''">首页</nuxt-link>
+        <nuxt-link to="/post?start=0&limit=3" :class="index===1?'active':''">旅游攻略</nuxt-link>
+        <nuxt-link to="/hotel" :class="index===2?'active':''">酒店</nuxt-link>
+        <nuxt-link to="/air" :class="index===3?'active':''">国内机票</nuxt-link>
       </el-row>
 
       <!-- 登录/用户信息 -->
@@ -43,9 +43,7 @@
         </el-dropdown>
 
         <!-- 不存在用户信息展示登录注册链接 -->
-        <nuxt-link to="/user/login" class="account-link" v-else
-          >登录 / 注册</nuxt-link
-        >
+        <nuxt-link to="/user/login" class="account-link" v-else>登录 / 注册</nuxt-link>
       </el-row>
     </el-row>
   </header>
@@ -53,6 +51,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      index: 9999
+    };
+  },
   methods: {
     // 用户退出
     handleLogout() {
@@ -65,8 +68,51 @@ export default {
   },
   watch: {
     $route() {
-      // console.log(this.$route);
+      // if (this.$route.name == "index") {
+      //   this.index = 0;
+      // }
+      // if (this.$route.name.indexOf("post") > -1) {
+      //   this.index = 1;
+      // }
+      // if (this.$route.name.indexOf("hotel") > -1) {
+      //   this.index = 2;
+      // }
+      // if (this.$route.name.indexOf("air") > -1) {
+      //   this.index = 3;
+      // }
+      let arr = ["index", "post", "hotel", "air"];
+      let isvalid = true;
+      arr.forEach((v, n) => {
+        if (!isvalid) return;
+        if (this.$route.name.indexOf(v) > -1) {
+          this.index = n;
+          isvalid = false;
+        }
+      });
     }
+  },
+  mounted() {
+    // if (this.$route.name == "index") {
+    //   this.index = 0;
+    // }
+    // if (this.$route.name.indexOf("post") > -1) {
+    //   this.index = 1;
+    // }
+    // if (this.$route.name.indexOf("hotel") > -1) {
+    //   this.index = 2;
+    // }
+    // if (this.$route.name.indexOf("air") > -1) {
+    //   this.index = 3;
+    // }
+    let arr = ["index", "post", "hotel", "air"];
+    let isvalid = true;
+    arr.forEach((v, n) => {
+      if (!isvalid) return;
+      if (this.$route.name.indexOf(v) > -1) {
+        this.index = n;
+        isvalid = false;
+      }
+    });
   }
 };
 </script>
@@ -114,7 +160,7 @@ export default {
       }
     }
 
-    /deep/ .nuxt-link-exact-active {
+    .active {
       background: #409eff;
       color: #fff !important;
     }

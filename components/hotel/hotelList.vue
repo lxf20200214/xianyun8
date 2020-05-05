@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="data.data==''">没有符合条件的数据</div>
+    <div v-if="data.data == ''">没有符合条件的数据</div>
     <div
       v-else
       class="hote"

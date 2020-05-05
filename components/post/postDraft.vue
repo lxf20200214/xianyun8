@@ -1,39 +1,35 @@
 <template>
   <div class="draft-box">
-    <h4 class="draft-title">
-      草稿箱(5)
-    </h4>
+    <h4 class="draft-title">草稿箱({{draftData.length}})</h4>
     <div class="draft-list">
       <div class="draft-item" v-for="(item, index) in draftData" :key="index">
         <div class="draft-post-title" @click="handleClick(item)">
           {{ item.title }}
           <span class="iconfont el-icon-edit"></span>
         </div>
-        <p>{{ moment().format("YYYY-MM-DD") }}</p>
+        <p>{{ item.time }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import moment from "moment";
 export default {
   data() {
     return {
-      draftData: [],
-      moment
+      draftData: []
     };
   },
   mounted() {
     setTimeout(() => {
       this.draftData = this.$store.state.post.saveData;
-      console.log(123, this.draftData);
+      // console.log(123, this.draftData);
     }, 0);
   },
   watch: {
     "$store.state.post.saveData"() {
       this.draftData = this.$store.state.post.saveData;
-      console.log(123, this.draftData);
+      // console.log(123, this.draftData);
     }
   },
   methods: {

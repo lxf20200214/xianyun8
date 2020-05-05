@@ -3,14 +3,14 @@
     <div class="recommend">
         <ul class="ul cell">
          <li>基本信息</li>
-        <li style="margin-left:15px">低价房型</li>
+        <li style="margin-left:23px">低价房型</li>
         <li>最低价格/每晚</li>
       </ul>
       <ul   ref="list"  class="cell" v-for="(item,index) in data" :key="index"   @mouseenter="handleEnter(index)" @mouseleave="handleLeave(index)"  @click="handleTo()"  >
         <li>{{item.name}}</li>
         <li >{{item.bestType}} </li>
         <li>
-          <span style="color:#ffd89f;width:50px">¥{{item.price}}</span> 起 <i  style="color:#ffd89f" class="iconfont el-icon-arrow-right"></i>
+          <span style="color:#ff9900;width:50px">¥{{item.price}}</span> 起 <i  style="color:#ff9900" class="iconfont el-icon-arrow-right"></i>
         </li>
         </ul>
     </div>
@@ -89,10 +89,14 @@ setTimeout(() => {
     justify-content: space-between;
     align-items: center;
       li:nth-child(3){
-        margin-right: 100px;
+        margin-right: 35px;
+        width: 175px;
+        text-align: center;
       }
-      li:nth-child(2){
-      margin-left: 15px;
+    
+      li{
+    width: 150px;
+
       }
   }
 }
