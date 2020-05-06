@@ -1,12 +1,12 @@
 <template>
   <div class="post-item">
-    <a href="#">
+    <a href="javascript:;" class="img">
       <h4>{{data.title}}</h4>
     </a>
 
     <p>{{data.summary}}</p>
     <div class="card-images">
-      <img :src="item" alt v-for="(item,index) in data.images" :key="index" />
+      <img :src="item" v-for="(item,index) in data.images" :key="index" />
     </div>
     <div class="post-info">
       <div class="post-info-left">
@@ -16,7 +16,7 @@
         </span>
         <span>
           <i>by</i>
-          <a href="#">
+          <a href="javascript:;">
             <img :src="`${$axios.defaults.baseURL}${data.account.defaultAvatar}`" alt />
             <i class="commonality">{{data.account.nickname}}</i>
           </a>
@@ -52,7 +52,7 @@ a:hover {
   width: 100%;
   padding: 20px 0;
   border-bottom: 1px solid #eee;
-  a {
+  .img {
     h4 {
       overflow: hidden;
       text-overflow: ellipsis;

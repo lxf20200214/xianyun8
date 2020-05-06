@@ -6,7 +6,8 @@
 
 export const state = () => {
   return {
-    saveData: []
+    saveData: [],
+    city: ""
   };
 };
 
@@ -39,5 +40,8 @@ export const mutations = {
       // 只保留数组的前五位
       state.saveData.length = 5;
     }
+  },
+  gainCityName(state, input) {
+    state.city = input;
   }
 };
