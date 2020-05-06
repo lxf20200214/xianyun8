@@ -1,8 +1,5 @@
 <template>
   <div class="image-text">
-    <a href="#" class="img">
-      <img :src="data.images[0]" alt />
-    </a>
     <div class="image-text-list">
       <a href="javascript:;">
         <h4>{{data.title}}</h4>
@@ -55,17 +52,6 @@ a:hover {
   width: 100%;
   padding: 20px 0;
   border-bottom: 1px solid #eee;
-  .img {
-    // width: 220px;
-    // height: 150px;
-    overflow: hidden;
-    flex-shrink: 0;
-    margin-right: 10px;
-    img {
-      width: 220px;
-      height: 150px;
-    }
-  }
   .image-text-list {
     width: 100%;
     a {
