@@ -44,58 +44,7 @@ export default {
       city: ""
     };
   },
-  mounted() {
-    MapLoader().then(
-      AMap => {
-        AMap.plugin("AMap.CitySearch", () => {
-          let citySearch = new AMap.CitySearch();
-          citySearch.getLocalCity((status, result) => {
-            if (!status === "complete" && result.info === "OK") {
-              // 查询成功，result即为当前所在城市信息
-              // alert("想获取你的位置");
-              this.$message.success("你当前所在的城市是:" + result.city);
-              this.$axios({
-                url: "/cities",
-                params: {
-                  name: result.city
-                }
-              })
-              .then(res => {
-                const { data } = res.data;
-                // 保存this.form数据到vuex中,供历史记录调用
-                this.$store.commit("hotel/setcitydata", data[0]);
-                this.getCities(data[0].id);
-                this.city = data[0].name;
-                this.$router.push({
-                  path: "/hotel",
-                  query: {
-                    cityName: data[0].name
-                  }
-                }).then(res => {
-                  const { data } = res.data;
-                  // 保存this.form数据到vuex中,供历史记录调用
-                  this.$store.commit("hotel/setcitydata", data[0]);
-                  this.getCities(data[0].id);
-                  this.city = data[0].name;
-                  this.$router.push({
-                    path: "/hotel",
-                    query: {
-                      cityName: data[0].name
-                    }
-                  });
-                });
-              }
-            });
-          });
-        },
-        e => {
-          console.log("地图加载失败", e);
-        }
-      );
-    } else {
-      this.getCities();
-    }
-  },
+
   methods: {
     // 封装请求酒店列表的方法
     getCities(value) {

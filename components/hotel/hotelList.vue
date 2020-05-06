@@ -157,8 +157,9 @@ a:hover {
 }
 
 .hotetitle {
+  padding-top: 25px;
   flex: 2;
-  margin-bottom: 120px;
+  margin-bottom: 100px;
 
   h4 {
     font-weight: 400;
