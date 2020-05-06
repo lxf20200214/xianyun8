@@ -4,7 +4,7 @@
       <!-- logo -->
       <div class="logo">
         <nuxt-link to="/">
-          <img src="http://157.122.54.189:9093/images/logo.jpg" alt />
+          <img src="../assets/images/35913.png" alt />
         </nuxt-link>
       </div>
 
@@ -138,7 +138,9 @@ export default {
 
     img {
       display: block;
-      width: 100%;
+      width: 156px;
+     height: 50px;
+      
     }
   }
 
