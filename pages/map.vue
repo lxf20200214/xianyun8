@@ -2,7 +2,7 @@
   <div style="width:1000px; margin:0 auto; padding:50px 0">
     <script
       type="text/javascript"
-      src="https://webapi.amap.com/maps?v=1.4.15&key=4e7b717582fe951d6aeb7920826f06e0&plugin=AMap.CitySearch"
+      src="https://webapi.amap.com/maps?v=1.4.15&key=02c96ac39f167e05f06c100b1e2b4bb1&plugin=AMap.CitySearch"
     ></script>
     <h2>高德地图</h2>
     <el-row type="flex" align="center" :gutter="80">
@@ -52,8 +52,8 @@ export default {
     //  map是一个地图的对象
     var map = new AMap.Map("container", {
       resizeEnable: true,
-      zoom: 13, //级别
-      center: [116.397428, 39.90923] //中心点坐标
+      zoom: 13 //级别
+      // center: [116.397428, 39.90923] //中心点坐标
     });
     this.map = map;
     AMap.plugin("AMap.CitySearch", () => {
