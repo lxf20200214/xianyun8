@@ -8,9 +8,21 @@
 
     <!-- 地图  -->
     <div id="box"></div>
-    <div id="box1"></div>
-    <!-- 右侧列表 -->
-    <div class="list">
+    <el-tabs v-model="activeName" @tab-click="handleClick" style="margin-left:10px">
+      <el-tab-pane label="风景" name="first">
+        <div class="list">
+          <div id="panel"></div>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="交通" name="second">
+       <div class="list" >
+          <div id="panel1"></div>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
+  <!-- 右侧列表 -->
+  <!-- <div class="list">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="风景" name="first">
           <div class="list_box">
@@ -18,7 +30,9 @@
               class="content"
               v-for="(item,index) in poisData"
               :key="index"
-              @mouseenter="handleenter(item,index)"
+              @mouseenter="handleenter(index)"
+               @mouseleave="handleLeave(index)"
+                ref="font"
             >
               <div class="site">{{item.name}}</div>
               <div
@@ -29,7 +43,11 @@
         </el-tab-pane>
         <el-tab-pane label="交通" name="second">
           <div class="list_box">
-            <div class="content" v-for="(item,index) in traffic" :key="index">
+            <div class="content" v-for="(item,index) in traffic" :key="index" 
+             @mouseenter="handleenter(index)"
+               @mouseleave="handleLeave(index)"
+                ref="font1"
+                >
               <div class="site">{{item.name}}</div>
               <div
                 class="kilometre"
@@ -38,8 +56,7 @@
           </div>
         </el-tab-pane>
       </el-tabs>
-    </div>
-  </div>
+  </div>-->
 </template>
 
 <script>
@@ -99,23 +116,20 @@ export default {
       this.load();
     },
     // 列表鼠标移入
-    handleenter(v, i) {
-      console.log(v, i);
-    //  this.map = new AMap.Map("box1", {
-    //     resizeEnable: true,
-    //     zoom: 15, //级别
-        
-    //     center: [
-    //       v.location.lng,
-    //        v.location.lat
-    //     ] //中心点坐标
-    //   });
+    handleenter(i) {
+      this.$refs.font[i].style.color = "#2b89ec";
+      if (this.$refs.font1) this.$refs.font1[i].style.color = "#2b89ec";
+    },
+    handleLeave(i) {
+      this.$refs.font[i].style.color = "";
+      if (this.$refs.font1) this.$refs.font1[i].style.color = "";
     },
     load() {
       this.map = new AMap.Map("box", {
         resizeEnable: true,
         zoom: 15, //级别
         center: [
+          // 当前酒店的中心位置
           this.content.location.longitude,
           this.content.location.latitude
         ] //中心点坐标
@@ -127,11 +141,12 @@ export default {
         imageSize: new AMap.Size(32, 32) // 根据所设置的大小拉伸或压缩图片
       });
 
-      // 循环返回风景的数据
+      // 必须设定时器才可以拿到父组件传过来的值进行poi搜索
       setTimeout(() => {
         // 创建一个空数组
         let markers = [];
         if (this.activeName === "first") {
+          // poi搜索的数据进行循环
           this.poisData.map((item, index) => {
             //  推到数组上
             markers.push({
@@ -141,7 +156,7 @@ export default {
             });
             return markers;
           });
-        } else if (this.activeName === "second") {
+        } else {
           this.traffic.map((item, index) => {
             //  推到数组上
             markers.push({
@@ -170,7 +185,7 @@ export default {
           });
           // 移入移出事件
           mark.on("mouseover", e => {
-            this.map.setCenter(item.position);
+            this.map.setCenter(item.position); // 当前地图中心点就是这个图标的偏移值
             info.setContent(item.name); // 内容
             info.open(this.map, e.target.getPosition()); //打开信息窗体
 
@@ -182,55 +197,87 @@ export default {
             this.map.clearInfoWindow();
           });
         });
+      }, 500);
 
-        this.markers = markers;
-        // console.log(this.markers);
-      }, 1000);
+      // AMap.service(["AMap.PlaceSearch"], () => {
+      //   if (this.activeName === "first") {
+      //     //构造地点查询类
+      //     var placeSearch = new AMap.PlaceSearch({
+      //       // 兴趣点类别
+      //       type: "风景名胜",
+      //       citylimit: true, //是否强制限制在设置的城市内搜索
+      //       map: this.map, // 展现结果的地图实例
+      //       autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
+      //     });
+      //   } else {
+      //     var placeSearch = new AMap.PlaceSearch({
+      //       // 兴趣点类别
+      //       type: "交通设施服务",
+      //       citylimit: true, //是否强制限制在设置的城市内搜索
+      //       map: this.map, // 展现结果的地图实例
+      //       autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
+      //     });
+      //   }
+      //   var cpoint = [ this.content.location.longitude,  this.content.location.latitude]; //中心点坐标
+      //   placeSearch.searchNearBy("", cpoint, 20000, (status, result) => {
+      //     // console.log(result);
+      //     // 存到data
+      //     if (this.activeName === "first") {
+      //        // 风景数据存到data
+      //       this.poisData = result.poiList.pois;
+      //     }
+      //     else {
+      //          // 交通数据存到data
+      //       this.traffic = result.poiList.pois;
+      //     }
+      //     // 距离
+      //     this.distance = result.poiList.pois.map(item => {
+      //       return item.distance;
+      //       console.log(this.poisData);
+      //     });
+      //   });
+      // });
 
-      AMap.service(["AMap.PlaceSearch"], () => {
+    
         if (this.activeName === "first") {
-          //构造地点查询类
-          var placeSearch = new AMap.PlaceSearch({
-            // 兴趣点类别
-            type: "风景名胜",
-            citylimit: true, //是否强制限制在设置的城市内搜索
-            map: this.map, // 展现结果的地图实例
-            panel: "panel", // 结果列表将在此容器中进行展示。
-            autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
-          });
-        } else {
-          var placeSearch = new AMap.PlaceSearch({
-            // 兴趣点类别
-            type: "交通设施服务",
-            citylimit: true, //是否强制限制在设置的城市内搜索
-            map: this.map, // 展现结果的地图实例
-            panel: "panel", // 结果列表将在此容器中进行展示。
-            autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
-          });
-        }
-        var cpoint = [
-          this.content.location.longitude,
-          this.content.location.latitude
-        ]; //中心点坐标
-        placeSearch.searchNearBy("", cpoint, 20000, (status, result) => {
-          // console.log(result);
-          // 存到data
-          if (this.activeName === "first") {
-            this.poisData = result.poiList.pois;
-
-            this.traffic = result.poiList.pois;
-            console.log(this.traffic);
-          }
-          // else {
-
-          // }
-          // this.poisData = result.poiList.pois;
-          this.distance = result.poiList.pois.map(item => {
-            return item.distance;
-            console.log(this.poisData);
-          });
+            AMap.service(["AMap.PlaceSearch"], () => {
+        //构造地点查询类
+        var placeSearch = new AMap.PlaceSearch({
+          pageSize: 10, // 单页显示结果条数
+          pageIndex: 1, // 页码
+          city: "020", // 兴趣点城市
+          citylimit: true, //是否强制限制在设置的城市内搜索
+          map: this.map, // 展现结果的地图实例
+          panel: "panel", // 结果列表将在此容器中进行展示。
+          autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
         });
-      });
+          //关键字查询
+          placeSearch.search("酒店", (status, result) => {
+            // 查询成功时，result即对应匹配的POI信息
+            // this.poisData = result.poiList.pois;+
+            console.log(result);
+          });
+           });
+        } else {
+           AMap.service(["AMap.PlaceSearch"], () => {
+        //构造地点查询类
+        var placeSearch = new AMap.PlaceSearch({
+          pageSize: 10, // 单页显示结果条数
+          pageIndex: 1, // 页码
+          city: "020", // 兴趣点城市
+          citylimit: true, //是否强制限制在设置的城市内搜索
+          map: this.map, // 展现结果的地图实例
+          panel: "panel1", // 结果列表将在此容器中进行展示。
+          autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
+        });
+          placeSearch.search("交通", (status, result) => {
+            // 查询成功时，result即对应匹配的POI信息
+            // this.traffic = result.poiList.pois;
+            console.log(result);
+          });
+            });
+        }
+
       // 给地图添加点标记
       this.map.add(this.markers);
     }
@@ -247,9 +294,24 @@ export default {
     height: 370px;
     float: left;
   }
+  #panel {
+    background-color: white;
+    max-height: 85%;
+    overflow-y: auto;
+    width: 100%;
+  }
+  #panel1{
+      background-color: white;
+    max-height: 85%;
+    overflow-y: auto;
+    width: 100%;
+  }
+  /deep/ .el-tabs__nav-scroll {
+    padding-left: 10px;
+  }
   .list {
     float: left;
-    padding-left: 20px;
+    margin-left: 10px;
     width: 340px;
     height: 370px;
     .list_box {

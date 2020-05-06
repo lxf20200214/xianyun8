@@ -71,18 +71,30 @@ export default {
                   query: {
                     cityName: data[0].name
                   }
+                }).then(res => {
+                  const { data } = res.data;
+                  // 保存this.form数据到vuex中,供历史记录调用
+                  this.$store.commit("hotel/setcitydata", data[0]);
+                  this.getCities(data[0].id);
+                  this.city = data[0].name;
+                  this.$router.push({
+                    path: "/hotel",
+                    query: {
+                      cityName: data[0].name
+                    }
+                  });
                 });
-              });
-            }
+              }
+            });
           });
-        });
-        return;
-      },
-      e => {
-        console.log("地图加载失败", e);
-      }
-    );
-    this.getCities();
+        },
+        e => {
+          console.log("地图加载失败", e);
+        }
+      );
+    } else {
+      this.getCities();
+    }
   },
   methods: {
     // 封装请求酒店列表的方法
@@ -96,6 +108,12 @@ export default {
         const { data } = res;
         this.$store.commit("hotel/setHotellist", res.data.data);
         this.hoteldatalist = data;
+        this.$router.push({
+          path: "/hotel",
+          query: {
+            cityName: data[0].name
+          }
+        });
         return res.config.params;
       });
       // });

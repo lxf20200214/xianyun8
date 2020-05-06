@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="data.data==''">没有符合条件的数据</div>
+    <div v-if="data.data == ''">没有符合条件的数据</div>
     <div
       v-else
       class="hote"
@@ -84,22 +84,7 @@ export default {
       page1: 5
     };
   },
-
-  mounted() {
-    this.$axios({
-      url: "/hotels",
-      params: {
-        city: this.$store.state.hotel.setcitydata.id
-      }
-    }).then(res => {
-      // console.log(res);
-      const { data } = res.data;
-      // console.log(res);
-      // console.log(data);
-      this.total = res.data.total;
-      this.list = data;
-    });
-  },
+  mounted() {},
   methods: {
     //条数数触发
     handleSizeChange(limit) {
