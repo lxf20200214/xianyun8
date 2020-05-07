@@ -1,7 +1,7 @@
 <template>
   <div class="w">
     <div class="menus-wrapper">
-      <postTab />
+      <postTab @gainCityName="gainCityName" />
       <div class="aside-recommend">
         <div class="aside-title">推荐城市</div>
         <img src="../../static/images/pic_sea.jpeg" alt />
@@ -29,7 +29,7 @@
       </div>
       <div class="post-title">
         <h4>推荐攻略</h4>
-        <el-button type="primary" icon="el-icon-edit" @click="clicKcreate">写日记</el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="clicKcreate">写游记</el-button>
       </div>
 
       <div class="post-list" v-for="(item, index) in flightsData" :key="index">
@@ -42,19 +42,18 @@
           }"
         >
           <postList :data="item" v-if="item.images.length >= 3" />
-
-          <postList2 :data="item" v-if="item.images.length === 1" />
+          <postList2 :data="item" v-if="item.images.length <3" />
         </nuxt-link>
       </div>
       <div class="el-row">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="pageIndex"
-          :page-sizes="[1, 2, 3, 4]"
-          :page-size="pageSize"
+          :current-page="start / limit + 1"
+          :page-sizes="[3,5,10,15]"
+          :page-size="limit"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="list.length"
+          :total="total"
         ></el-pagination>
       </div>
     </div>
@@ -64,87 +63,124 @@
 <script>
 import postList from "@/components/post/postList.vue";
 import postList2 from "@/components/post/postList2.vue";
+
 import postTab from "@/components/post/postTab.vue";
 export default {
-  // asyncData({ redirect }) {
-  //   redirect("/post?start=0&limit=3");
-  // },
-  // middleware: "authenticated",
   components: {
     postList,
     postList2,
+
     postTab
   },
   data() {
     return {
       value: "",
-      pageIndex: 0,
-      pageSize: 3,
-      getList: {},
+      start: 0,
+      limit: 3,
       flightsData: [],
       list: ["广州", "上海", "北京"],
       total: 0
     };
   },
   mounted() {
-    if (this.$route.query) {
-      const { city, start, limit } = this.$route.query;
-      this.listData(city, start, limit);
+    if (this.$route.query.city) {
+      this.value = this.$route.query.city;
     }
+    this.getData();
   },
   methods: {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-      // 显示条数
-      this.pageSize = val;
+      // // 显示条数
+      this.limit = val;
 
-      this.pageIndex = 1;
-      // 重新切割数组
-      this.flightsData = this.getList.slice(
-        (this.pageIndex - 1) * this.pageSize,
-        this.pageIndex * this.pageSize
-      );
+      this.$router.replace({
+        url: this.$route.path,
+        query: {
+          _limit: this.limit,
+          _start: this.start
+        }
+      });
+      this.getData();
     },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-      this.pageIndex = val;
-      // 重新切割数组
-      this.flightsData = this.getList.slice(
-        (this.pageIndex - 1) * this.pageSize,
-        this.pageIndex * this.pageSize
-      );
+    // 切换条数时候触发
+    handleCurrentChange(index) {
+      // 根据页数修改start的开始的条数
+      this.start = (index - 1) * this.limit;
+      // 给当前的路由添加参数
+      this.$router.replace({
+        url: this.$route.path,
+        query: {
+          _start: this.start,
+          _limit: this.limit
+        }
+      });
+      // 可以使用computed优化
+      this.getData();
     },
     handleSearch() {
-      this.listData();
+      this.$router.replace({
+        url: this.$route.path,
+        query: {
+          city: this.value,
+          _start: this.start, // 从哪一条数据开始
+          _limit: this.limit // 拿多少条数据
+        }
+      });
+      this.getData();
+    },
+    gainCityName(data) {
+      this.value = data;
+      this.$router.replace({
+        url: this.$route.path,
+        query: {
+          city: this.value,
+          _start: this.start, // 从哪一条数据开始
+          _limit: this.limit // 拿多少条数据
+        }
+      });
+      this.getData();
     },
     handleSearch1(item) {
       this.value = item;
-      this.listData();
+      // 给当前的路由添加参数
+      this.$router.replace({
+        url: this.$route.path,
+        query: {
+          city: this.value,
+          _start: this.start, // 从哪一条数据开始
+          _limit: this.limit // 拿多少条数据
+        }
+      });
+      this.getData();
     },
     clicKcreate() {
       this.$router.push("post/create");
     },
-    listData(city, start, limit) {
+    getData() {
       const config = {
         url: "/posts",
+        // 当前请求的参数
         params: {
-          _start: start,
-          _limit: limit,
-          city: city
+          _start: this.start, // 从哪一条数据开始
+          _limit: this.limit // 拿多少条数据
         }
       };
+
       if (this.value) {
         config.params = {
-          city: this.value
+          city: this.value,
+          _start: this.start, // 从哪一条数据开始
+          _limit: this.limit // 拿多少条数据
         };
       }
 
       this.$axios(config).then(res => {
-        // console.log(res);
-        const { data } = res.data;
-        this.getList = data;
-        this.flightsData = this.getList.slice(0, this.pageSize);
-        this.total = res.data.total;
+        const { data, total } = res.data;
+        // 赋值给data的list
+        this.flightsData = data;
+        // 总条数
+        this.total = total;
       });
     }
   }

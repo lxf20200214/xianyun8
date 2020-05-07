@@ -81,9 +81,26 @@ export default {
       if (this.current === 0) {
         this.$router.push("/post?city=" + this.input + "&start=0&limit=3");
       }
-      // /hotel?city=
+
       if (this.current === 1) {
-        this.$router.push("/hotel?city=" + this.input);
+        this.$axios({
+          url: "/cities",
+          params: {
+            name: this.input
+          }
+        }).then(res => {
+          const { data } = res.data;
+          // 保存this.form数据到vuex中,供历史记录调用
+          this.$store.commit("hotel/setcitydata", data[0]);
+          this.$router.push({
+            path: "/hotel",
+            query: {
+              cityName: data[0].name
+            }
+          });
+        });
+
+        // this.$router.push("/hotel?city=" + this.input);
       }
     }
   }

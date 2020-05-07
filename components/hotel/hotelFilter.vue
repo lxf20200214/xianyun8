@@ -1,6 +1,5 @@
 <template>
   <div>
-    <script src="https://webapi.amap.com/loader.js"></script>
     <el-row>
       <el-col :span="24">
         <div class="grid-content bg-purple-dark">
@@ -11,7 +10,7 @@
                 class="inline-input"
                 v-model="form.hotelcity"
                 :fetch-suggestions="querySearch"
-                placeholder="切换城市"
+                placeholder="目的酒店"
                 @select="handleSelect"
               ></el-autocomplete>
             </el-form-item>
@@ -63,7 +62,7 @@
                     <el-button type="primary" size="mini" @click="visiblepeople">确定</el-button>
                   </div>
                 </el-row>
-                <!-- readonly是否只读 -->
+
                 <el-input
                   readonly
                   placeholder="请输入内容"
@@ -82,6 +81,10 @@
       </el-col>
     </el-row>
     <el-row>
+      <Hotelbanner v-if="$route.query.cityName == undefined" />
+    </el-row>
+    <el-row v-if="$store.state.hotel.setcitydata
+                  .scenics.length>0">
       <el-col :span="24">
         <el-col :span="13">
           <el-col :span="24" class="grid-content-list">
@@ -100,9 +103,16 @@
                   </li>
                 </ul>
               </div>
-              <div @click="switchshow" class="switchshow" v-if="$store.state.hotel.setcitydata">
+              <div
+                @click="switchshow"
+                class="switchshow"
+                v-if="$store.state.hotel.setcitydata
+                  .scenics.length>0"
+              >
                 <el-link>
-                  <i class="el-icon-d-arrow-right"></i>等25个区域
+                  <i class="el-icon-d-arrow-right"></i>
+                  等{{$store.state.hotel.setcitydata
+                  .scenics.length}}个区域
                 </el-link>
               </div>
             </el-col>
@@ -154,7 +164,7 @@
             </el-col>
           </el-col>
         </el-col>
-        <!-- 地图 -->
+
         <el-col :span="11">
           <div
             class="grid-content bg-purple-light"
@@ -170,15 +180,22 @@
         </el-col>
       </el-col>
     </el-row>
-    <el-row type="flex" justify="space-between" class="border">
+    <el-row
+      v-bind="hotelFilter"
+      type="flex"
+      justify="space-between"
+      class="border"
+      v-if="$store.state.hotel.setcitydata
+                  .scenics.length>0"
+    >
       <el-col :span="22">
         <div class="grid-content bg-purple-dark">
-          <div class="block">
+          <div class="block3">
             <div class="blockspan">
               <span class="demonstration">价格</span>
               <span>0-{{ pricevalue }}</span>
             </div>
-            <el-slider v-model="pricevalue" :max="4000" @change="pricevalue1"></el-slider>
+            <el-slider v-model="pricevalue" :max="4000" @input="pricevalue1"></el-slider>
           </div>
         </div>
       </el-col>
@@ -199,7 +216,11 @@
               </span>
               <el-dropdown-menu slot="dropdown" placement="bottom-start">
                 <el-dropdown-item v-for="item in levels.levels" :key="item.levels">
-                  <el-checkbox :label="item.name" @change="dropdownitem" v-model="levelscheckList"></el-checkbox>
+                  <el-checkbox
+                    :label="item.name"
+                    @change="dropdownitem(item.id,1,item)"
+                    v-model="levelscheckList"
+                  ></el-checkbox>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -224,7 +245,11 @@
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item v-for="item in levels.types" :key="item.levels">
-                    <el-checkbox :label="item.name" @change="dropdownitem" v-model="typescheckList"></el-checkbox>
+                    <el-checkbox
+                      :label="item.name"
+                      @change="dropdownitem(item.id,2,item)"
+                      v-model="typescheckList"
+                    ></el-checkbox>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -252,7 +277,7 @@
                   <el-dropdown-item v-for="item in levels.assets" :key="item.levels">
                     <el-checkbox
                       :label="item.name"
-                      @change="dropdownitem"
+                      @change="dropdownitem(item.id,3,item)"
                       v-model="assetscheckList"
                     ></el-checkbox>
                   </el-dropdown-item>
@@ -291,7 +316,7 @@
                   >
                     <el-checkbox
                       :label="item.name"
-                      @change="dropdownitem"
+                      @change="dropdownitem(item.id,4,item)"
                       v-model="brandscheckList"
                     ></el-checkbox>
                   </el-dropdown-item>
@@ -302,12 +327,16 @@
         </div>
       </el-col>
     </el-row>
-    <div v-bind="hotelFilter"></div>
   </div>
 </template>
 <script>
 import MapLoader from "@/plugins/amap.js";
+import Hotelbanner from "@/components/hotel/hotelbanner.vue";
 export default {
+  components: {
+    Hotelbanner
+  },
+
   data() {
     return {
       form: {
@@ -332,7 +361,14 @@ export default {
       brandscheckList: [], //品牌的列表
       count: 0, //滚动条的值
       levels: {},
-      inputtext: "" //人数输入框的值
+      inputtext: "", //人数输入框的值
+      params: {
+        city: ""
+      },
+      hotellevel: [],
+      hoteltype: [],
+      hotelasset: [],
+      hotelbrand: []
     };
   },
   mounted() {
@@ -354,7 +390,54 @@ export default {
       this.$emit("chengshi", this.form.hotelcity);
     },
     //多选框绑定值发生变化时
-    dropdownitem(value) {},
+    dropdownitem(value, index, item) {
+      if (index === 1) {
+        let index = this.hotellevel.indexOf(value);
+        if (index > -1) {
+          //   有该id就删除
+          this.hotellevel.splice(index, 1);
+        } else {
+          //   还没有该id,就添加
+          this.hotellevel.push(value);
+        }
+        this.params.hotellevel = this.hotellevel;
+      }
+      if (index === 2) {
+        let index = this.hoteltype.indexOf(value);
+
+        if (index > -1) {
+          //   有该id就删除
+          this.hoteltype.splice(index, 1);
+        } else {
+          //   还没有该id,就添加
+          this.hoteltype.push(value);
+        }
+        this.params.hoteltype = this.hoteltype;
+      }
+      if (index === 3) {
+        let index = this.hotelasset.indexOf(value);
+
+        if (index > -1) {
+          //   有该id就删除
+          this.hotelasset.splice(index, 1);
+        } else {
+          //   还没有该id,就添加
+          this.hotelasset.push(value);
+        }
+        this.params.hotelasset = this.hotelasset;
+      }
+      if (index === 4) {
+        let index = this.hotelbrand.indexOf(value);
+        if (index > -1) {
+          //   有该id就删除
+          this.hotelbrand.splice(index, 1);
+        } else {
+          //   还没有该id,就添加
+          this.hotelbrand.push(value);
+        }
+        this.params.hotelbrand = this.hotelbrand;
+      }
+    },
     //切换城市时触发
     handleSelect() {},
     //返回输入建议的方法
@@ -454,7 +537,8 @@ export default {
     //滑块的监听
     pricevalue1(value) {
       // console.log(value);
-      console.log(this.pricevalue);
+      // this.pricevalue = value;
+      // this.params.price_in = this.pricevalue;
     },
     //每间人数成人选择的监听
     chengren(value) {
@@ -469,21 +553,14 @@ export default {
       this.visible = false;
       this.inputtext = this.form.value2 + "  " + this.form.value3;
     },
-    getHotel(
-      pricevalue,
-      levelscheckList,
-      typescheckList,
-      brandscheckList,
-      assetscheckList
-    ) {
+    getHotel(data) {
       return this.$axios({
-        url:
-          "/hotels" +
-          `?&city=${this.$store.state.hotel.setcitydata.id}&price_in=${pricevalue}&hotellevel=${levelscheckList}&hoteltype=${typescheckList}&hotelbrand=${brandscheckList}&hotelasset=${assetscheckList}`
+        url: "/hotels" + "?" + data
       }).then(res => {
         const { data } = res.data;
         this.$emit("chengshi", res.data);
         this.$store.commit("hotel/setHotellist", data);
+
         return res.data;
       });
       // });
@@ -492,13 +569,28 @@ export default {
   //监听
   computed: {
     hotelFilter() {
-      this.getHotel(
-        this.pricevalue,
-        this.levelscheckList,
-        this.typescheckList,
-        this.brandscheckList,
-        this.assetscheckList
-      );
+      this.levelscheckList; //星级复选框
+      this.typescheckList; //经济复选框
+      this.assetscheckList; //设施复选框
+      this.brandscheckList; //品牌的列表
+
+      this.params.city = this.$store.state.hotel.setcitydata.id;
+      let data = ``;
+      for (let key in this.params) {
+        console.log(this.params[key]);
+
+        if (Array.isArray(this.params[key])) {
+          // debugger;
+          this.params[key].forEach(v => {
+            data += `&${key}=${v}`;
+          });
+        } else {
+          data += `&${key}=${this.params[key]}`;
+        }
+      }
+      this.getHotel(data);
+
+      return "";
     }
   },
   //监听路由变化
@@ -602,8 +694,11 @@ export default {
   border: 1px solid #cccccc;
   padding: 5px 0 5px 20px;
   margin: 20px 0;
-  /deep/ e-col {
-    border-right: 1px solid #cccccc;
+  /deep/ .block1[data-v-68eaeb74] {
+    border-left: 1px solid #cccccc;
   }
+}
+.block3 {
+  padding-right: 20px;
 }
 </style>
