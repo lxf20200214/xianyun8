@@ -10,7 +10,7 @@
       <el-col :span="20" type="felx" class="user_grade">
         <span class="star">
           <div class="watermark">
-            <div class="watermark_font">非常推荐</div>
+            <div class="watermark_font">{{value >4?'非常推荐':'推荐'}}</div>
           </div>
           <el-rate
             v-model='value'
@@ -192,7 +192,7 @@ export default {
       // border-radius: 50%;
       border: 2px solid hotpink;
       transform: rotate(-35deg);
-      padding: 6px;
+      padding: 2px 6px;
       .watermark_font {
         color: red;
         font-size: 25px;

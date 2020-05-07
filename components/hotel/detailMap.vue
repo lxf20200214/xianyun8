@@ -142,62 +142,62 @@ export default {
       });
 
       // 必须设定时器才可以拿到父组件传过来的值进行poi搜索
-      setTimeout(() => {
-        // 创建一个空数组
-        let markers = [];
-        if (this.activeName === "first") {
-          // poi搜索的数据进行循环
-          this.poisData.map((item, index) => {
-            //  推到数组上
-            markers.push({
-              name: item.name, // 名字
-              position: [item.location.lng, item.location.lat], // 经纬度
-              title: item.name
-            });
-            return markers;
-          });
-        } else {
-          this.traffic.map((item, index) => {
-            //  推到数组上
-            markers.push({
-              name: item.name, // 名字
-              position: [item.location.lng, item.location.lat], // 经纬度
-              title: item.name
-            });
-            return markers;
-          });
-        }
-        // console.log(markers);
-        markers.forEach((item, index) => {
-          let mark = new AMap.Marker({
-            position: new AMap.LngLat(item.position[0], item.position[1]),
-            offset: new AMap.Pixel(-16, -32),
-            icon: icon, // 添加 Icon 图标 URL
-            map: this.map, // 展现结果的地图实例
-            title: item.name,
-            id: index
-          });
-          var info = new AMap.InfoWindow({
-            // 接收内容
-            autoMove: true,
-            // 弹窗偏移值
-            offset: new AMap.Pixel(0, -30)
-          });
-          // 移入移出事件
-          mark.on("mouseover", e => {
-            this.map.setCenter(item.position); // 当前地图中心点就是这个图标的偏移值
-            info.setContent(item.name); // 内容
-            info.open(this.map, e.target.getPosition()); //打开信息窗体
+      // setTimeout(() => {
+      //   // 创建一个空数组
+      //   let markers = [];
+      //   if (this.activeName === "first") {
+      //     // poi搜索的数据进行循环
+      //     this.poisData.map((item, index) => {
+      //       //  推到数组上
+      //       markers.push({
+      //         name: item.name, // 名字
+      //         position: [item.location.lng, item.location.lat], // 经纬度
+      //         title: item.name
+      //       });
+      //       return markers;
+      //     });
+      //   } else {
+      //     this.traffic.map((item, index) => {
+      //       //  推到数组上
+      //       markers.push({
+      //         name: item.name, // 名字
+      //         position: [item.location.lng, item.location.lat], // 经纬度
+      //         title: item.name
+      //       });
+      //       return markers;
+      //     });
+      //   }
+      //   // console.log(markers);
+      //   markers.forEach((item, index) => {
+      //     let mark = new AMap.Marker({
+      //       position: new AMap.LngLat(item.position[0], item.position[1]),
+      //       offset: new AMap.Pixel(-16, -32),
+      //       icon: icon, // 添加 Icon 图标 URL
+      //       map: this.map, // 展现结果的地图实例
+      //       title: item.name,
+      //       id: index
+      //     });
+      //     var info = new AMap.InfoWindow({
+      //       // 接收内容
+      //       autoMove: true,
+      //       // 弹窗偏移值
+      //       offset: new AMap.Pixel(0, -30)
+      //     });
+      //     // 移入移出事件
+      //     mark.on("mouseover", e => {
+      //       this.map.setCenter(item.position); // 当前地图中心点就是这个图标的偏移值
+      //       info.setContent(item.name); // 内容
+      //       info.open(this.map, e.target.getPosition()); //打开信息窗体
 
-            info.setContent(item.name); // 内容
-            info.open(this.map, e.target.getPosition()); //打开信息窗体
-          });
-          mark.on("mouseout", e => {
-            // 关闭窗体
-            this.map.clearInfoWindow();
-          });
-        });
-      }, 500);
+      //       info.setContent(item.name); // 内容
+      //       info.open(this.map, e.target.getPosition()); //打开信息窗体
+      //     });
+      //     mark.on("mouseout", e => {
+      //       // 关闭窗体
+      //       this.map.clearInfoWindow();
+      //     });
+      //   });
+      // }, 500);
 
       // AMap.service(["AMap.PlaceSearch"], () => {
       //   if (this.activeName === "first") {
@@ -270,7 +270,7 @@ export default {
           panel: "panel1", // 结果列表将在此容器中进行展示。
           autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
         });
-          placeSearch.search("交通", (status, result) => {
+          placeSearch.search("出行", (status, result) => {
             // 查询成功时，result即对应匹配的POI信息
             // this.traffic = result.poiList.pois;
             console.log(result);
